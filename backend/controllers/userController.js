@@ -39,6 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
             name: user.name,
             email: user.email,
             role: user.role,
+            preference: user.preference,
             token: generateToken(user._id)
         
         })
@@ -63,8 +64,8 @@ const loginUser = asyncHandler(async (req, res) => {
             name: user.name,
             email: user.email,
             role: user.role,
+            preference: user.preference,
             token: generateToken(user._id)
-
         })
     } else {
         res.status(400)
@@ -78,8 +79,57 @@ const loginUser = asyncHandler(async (req, res) => {
 // @access Private
 const getMe = asyncHandler(async (req, res) => {
     // const {_id, name, email, role} = await User.findById(req.user.id) //req.user.id is whatever user has authenticated
-    res.status(200).json(req.user)    
+    res.status(200).json({
+            _id: req.user.id,
+            name: req.user.name,
+            email: req.user.email,
+            role: req.user.role,
+            preference: req.user.preference,
+            token: generateToken(req.user._id)
+        })    
 })
+
+
+// @desc Update preference
+// @route PUT /api/users/preference/:id
+// @access Private
+const updatePreference = asyncHandler(async (req, res) => {
+
+    const user = await User.findById(req.params.id); // getting goal by id
+  
+    if (!user) {
+      // checking if goal exists
+      res.status(400);
+      throw new Error("Order not found");
+    }
+
+    const appUser = await User.findById(req.user._id) //consider chainging to _id if doesnt work
+  
+    // Check for user
+    if (!appUser) {
+      res.status(401);
+      throw new Error("User not found");
+    }
+  
+    // Make sure the logged in user matches the order user
+    if (user._id.toString() !== appUser._id.toString()) {
+      res.status(401);
+      throw new Error("User not authorised");
+    }
+  
+    const updatedOrder = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+  
+    res.status(200).json(
+        updatedOrder.preference
+        // _id: req.user.id,
+        // name: req.user.name,
+        // email: req.user.email,
+        // role: req.user.role,
+        // preference: req.user.preference,
+    );
+  });
 
 // Generate JWT
 const generateToken = (id) => {
@@ -92,5 +142,6 @@ const generateToken = (id) => {
 module.exports = {
     registerUser,
     loginUser,
-    getMe
+    getMe,
+    updatePreference,
 }

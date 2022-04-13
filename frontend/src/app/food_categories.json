@@ -1,0 +1,24 @@
+{
+  "cuisines": [
+    { "cuisine": "British",
+    "restaurants": [
+      {"restaurantName": "Cod & Caper", "lat":0, "long":0,  "menu": [
+        {"key": "000000000010000", "itemName": "Fish and chips", "itemDescription": "", "itemImage": ""}
+      ]},
+      {"restaurantName": "",  "lat":0, "long":0, "menu": [
+        {"key": "001000100010001", "itemName": "", "itemDescription": "", "itemImage": ""}
+      ]}
+    ]  },
+    { "cuisine": "Greek",
+        "restaurants": [
+        {"restaurantName": "", "lat":0, "long":0,  "menu": [
+          {"key": "001000100010001", "itemName": "", "itemDescription": "", "itemImage": ""}
+        ]},
+        {"restaurantName": "", "lat":0, "long":0,  "menu": [
+          {"key": "001000100010001", "itemName": "", "itemDescription": "", "itemImage": ""}
+        ]}
+      ]
+    }
+  ]
+
+}

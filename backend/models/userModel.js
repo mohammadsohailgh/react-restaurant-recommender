@@ -14,6 +14,9 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please add a password']
     },
+    preference: {
+        type: String,
+    },
     role: { 
         type: String, //false = restaurant user, true = customer
         required: [true, 'Please add a role'],

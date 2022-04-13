@@ -7,7 +7,23 @@ const User = require("../models/userModel");
 // @route Get /api/orders
 // @access Private
 const getOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ user: req.user.id });
+  const orders = await Order.find({ user: req.user.id});
+
+  // db.collection.find({
+  //   "_id": your_id
+  // },
+  // {
+  //   "followedBy": {
+  //     "$slice": 3
+  //   }
+  // })
+
+
+
+
+  // { "_id" : ObjectId("5314b5c360477752b449eedf"), "count" : 4 }
+
+  // const orders = await Order.find( {  } )
   res.status(200).json(orders);
 });
 

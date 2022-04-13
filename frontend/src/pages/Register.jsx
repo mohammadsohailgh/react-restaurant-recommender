@@ -1,74 +1,74 @@
-import {useState, useEffect} from 'react'
-import {useSelector, useDispatch} from 'react-redux'
-import {useNavigate} from 'react-router-dom'
-import {toast} from 'react-toastify'
+import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { FaUser } from "react-icons/fa"
-import { register, reset} from '../features/auth/authSlice'
+import { register, reset } from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
 
 function Register() {
-    const [formData, setFromData] = useState({
-        role: '',
-        name: '',
-        email: '',
-        password: '',
-        password2: ''
-    })
+  const [formData, setFormData] = useState({
+    role: 'customer',
+    name: '',
+    email: '',
+    password: '',
+    password2: ''
+  })
 
-    const {role, name, email, password, password2} = formData
+  const { role, name, email, password, password2 } = formData
 
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-    const {user, isLoading, isError, isSuccess, message} = useSelector(
-        (state) => state.auth 
-    )
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  )
 
-    useEffect(() => {
-        if(isError) {
-            toast.error(message)
-        }
-
-        if(isSuccess || user ) {
-            navigate('/')
-        } 
-
-        dispatch (reset())
-
-    }, [user, isError, isSuccess, message, navigate, dispatch])
-
-
-    const onChange = (e) => {
-        setFromData((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value,
-        }))
+  useEffect(() => {
+    if (isError) {
+      toast.error(message)
     }
 
-    const onSubmit = (e) => {
-        e.preventDefault()
-
-        if(password !== password2) {
-            toast.error('Passwords do not match')
-        } else if (role === "") {
-            toast.error('Please enter a role')
-        } else {
-            const userData = {
-                role, 
-                name,
-                email,
-                password,
-            }
-        
-        dispatch(register(userData))
-        }
+    if (isSuccess || user) {
+      navigate('/')
     }
 
-    if(isLoading) {
-        return <Spinner />
+    dispatch(reset())
+
+  }, [user, isError, isSuccess, message, navigate, dispatch])
+
+
+  const onChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }))
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault()
+
+    if (password !== password2) {
+      toast.error('Passwords do not match')
+    } else if (role === "") {
+      toast.error('Please enter a role')
+    } else {
+      const userData = {
+        role,
+        name,
+        email,
+        password,
+      }
+
+      dispatch(register(userData))
     }
-    return (
-     <>
+  }
+
+  // if (isLoading) {
+  //   return <Spinner />
+  // }
+  return (
+    <>
       <section className='heading'>
         <h1>
           <FaUser /> Register
@@ -78,18 +78,18 @@ function Register() {
 
       <section className='form'>
         <form onSubmit={onSubmit}>
-        <div className='form-group'>
+          {/* <div className='form-group'>
             <select
-            id="role"
-            name='role'
-            value={role}
-            onChange ={onChange}
+              id="role"
+              name='role'
+              value={role}
+              onChange={onChange}
             >
               <option value="" disabled hidden>Select your role</option>
               <option value="customer">Customer</option>
               <option value="restaurant">Restaurant</option>
             </select>
-          </div>
+          </div> */}
           <div className='form-group'>
             <input
               type='text'
@@ -142,8 +142,8 @@ function Register() {
         </form>
       </section>
     </>
-    )
-  
+  )
+
 }
 
 export default Register
