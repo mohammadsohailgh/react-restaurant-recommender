@@ -9,7 +9,7 @@ function OrderForm() {
 
     const onSubmit = e => {
       e.preventDefault()
-
+      console.log(({text}))
       dispatch(createOrder(({text})))
       setText('')
     }

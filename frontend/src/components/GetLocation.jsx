@@ -62,7 +62,6 @@ const GetLocation = () => {
       if (unit === "N") {
         dist = dist * 0.8684;
       }
-    //   console.log(dist);
       return dist;
     }
   }
@@ -108,21 +107,16 @@ const allMenuItemNames = restaurants.cuisines.flatMap(n => n.restaurants.flatMap
 const returnAllBitterItems = (restaurants.cuisines.map(n => n.restaurants).filter(restaurants => restaurants))
 
 const shallowRestaurants = {...restaurants}
-// console.log(restaurants)
-// console.log({...restaurants})
-console.log('restaurant names: ', restaurantNames)
+
 
 
 const getAllBitterItems = (userPreferences) => {
   const allBitterItems = restaurants.cuisines.flatMap(n => n.restaurants.flatMap(restaurant => restaurant.menu.map( menuItem => menuItem.itemName ) ))
-  // console.log(str.charAt(2))
 }
 
 const findNearestFiveRestaurants = restaurants.cuisines.map(n => n.restaurants.map(restaurant => [restaurant.lat, restaurant.long] ))
 
 const filterRes = restaurants.cuisines.filter(n => n.restaurants.filter(restaurant => restaurant.restaurantName === 'Cod & Caper' ))
-console.log('cod and caper filtered', filterRes)
-// console.log(g)
 
 
   return (
@@ -135,17 +129,8 @@ console.log('cod and caper filtered', filterRes)
       <p> Your lat: {userLat} </p> 
 
     Distance: {distance(userLat, userLong, 51.447364861194764, -2.598244900049596)}
-    {console.log('Distance: ' + distance(userLat, userLong, 51.447364861194764, -2.598244900049596) + ' Miles')}
 
-    {/* { console.log( restaurants.map((el) => Math.pow(el, e) % n) ) } */}
-    {/* { console.log( restaurants.map((el) => console.log(el['0000']) )) } */}
-
-    {/* { console.log(JSON.stringify(cuisines) ) } */}
-
-    {/* { console.log( 'cuisines', cuisines ) }
-    { console.log('restaurantNames', restaurantNames ) } 
-    { console.log('allMenuItemNames', allMenuItemNames ) } 
-    { console.log('returnAllBitterItems', returnAllBitterItems ) }  */}
+  
 
 
     {/* {getAllBitterItems("000000000010000")} */}

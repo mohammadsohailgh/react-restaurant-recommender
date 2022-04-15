@@ -7,7 +7,7 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     orders: orderReducer,
-    preference: preferenceReducer,
+    globalStatePreference: preferenceReducer,
   },
 })
 

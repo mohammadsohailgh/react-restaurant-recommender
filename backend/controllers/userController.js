@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler') //handles exceptions
 const User = require('../models/userModel')
+const { response } = require('express')
 
 // @desc Register new user
 // @route POST /api/users
@@ -41,7 +42,6 @@ const registerUser = asyncHandler(async (req, res) => {
             role: user.role,
             preference: user.preference,
             token: generateToken(user._id)
-        
         })
     } else {
         res.status(400)
@@ -80,12 +80,22 @@ const loginUser = asyncHandler(async (req, res) => {
 const getMe = asyncHandler(async (req, res) => {
     // const {_id, name, email, role} = await User.findById(req.user.id) //req.user.id is whatever user has authenticated
     res.status(200).json({
-            _id: req.user.id,
-            name: req.user.name,
-            email: req.user.email,
-            role: req.user.role,
+            _id: res.user._id,
+            name: res.user.name,
+            email: res.user.email,
+            role: res.user.role,
+            preference: res.user.preference,
+            token: generateToken(res.user._id)
+        })    
+})
+
+// @desc Get user data
+// @route GET /api/users/me
+// @access Private
+const getPreference = asyncHandler(async (req, res) => {
+    // const {_id, name, email, role} = await User.findById(req.user.id) //req.user.id is whatever user has authenticated
+    res.status(200).json({
             preference: req.user.preference,
-            token: generateToken(req.user._id)
         })    
 })
 
@@ -100,7 +110,7 @@ const updatePreference = asyncHandler(async (req, res) => {
     if (!user) {
       // checking if goal exists
       res.status(400);
-      throw new Error("Order not found");
+      throw new Error("User not found");
     }
 
     const appUser = await User.findById(req.user._id) //consider chainging to _id if doesnt work
@@ -111,24 +121,20 @@ const updatePreference = asyncHandler(async (req, res) => {
       throw new Error("User not found");
     }
   
-    // Make sure the logged in user matches the order user
+    // Make sure the logged in user matches the user user
     if (user._id.toString() !== appUser._id.toString()) {
       res.status(401);
       throw new Error("User not authorised");
     }
   
-    const updatedOrder = await User.findByIdAndUpdate(req.params.id, req.body, {
+    const updatedPreference = await User.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
   
-    res.status(200).json(
-        updatedOrder.preference
-        // _id: req.user.id,
-        // name: req.user.name,
-        // email: req.user.email,
-        // role: req.user.role,
-        // preference: req.user.preference,
-    );
+    res.status(200).json({
+        'preference': updatedPreference.preference
+    });
+
   });
 
 // Generate JWT
@@ -144,4 +150,5 @@ module.exports = {
     loginUser,
     getMe,
     updatePreference,
+    getPreference
 }

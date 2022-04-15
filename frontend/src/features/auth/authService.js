@@ -31,32 +31,11 @@ const logout = () => {
   localStorage.removeItem('user')
 }
 
-// Get user data
-const getUserData = async (token) => {
-  console.log("authService token: ", token)
-  const config = {
-    headers: {
-        Authorization: `Bearer ${token}`,
-    },
-  }
-  const response = await axios.get(API_URL + 'me', config)
-
-  console.log('response data: ', response.data)
-  console.log('response pref: ', response.data.preference)
-
-  // if (response.data) {
-  //   localStorage.setItem('user', JSON.stringify(response.data))
-  // }
-
-  return response.data
-}
-
 
 const authService = {
   register,
   logout,
   login,
-  getUserData,
 }
 
 export default authService

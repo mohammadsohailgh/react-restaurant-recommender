@@ -48,21 +48,6 @@ export const logout = createAsyncThunk('auth/logout', async () => {
   await authService.logout()
 })
 
-// Get user
-export const getUserData = createAsyncThunk('auth/getMe', async (_, thunkAPI) => {
-  try {
-    const token = thunkAPI.getState().auth.user.token
-    console.log('authSlice token', token)
-    return await authService.getUserData(token)
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString()
-    return thunkAPI.rejectWithValue(message)
-  }
-})
-
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -123,6 +108,7 @@ export const authSlice = createSlice({
       // })
   },
 })
+
 
 export const { reset } = authSlice.actions
 export default authSlice.reducer

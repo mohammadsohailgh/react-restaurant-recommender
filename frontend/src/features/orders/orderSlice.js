@@ -34,6 +34,8 @@ export const createOrder = createAsyncThunk(
 // get user orders
 export const getOrders = createAsyncThunk('orders/getAll', async (_, thunkAPI) => {
     try {
+        console.log('getOrders ordersSlice hit!: ')
+
         const token = thunkAPI.getState().auth.user.token
         return await orderService.getOrders(token)
     } catch (error) {
@@ -81,6 +83,7 @@ export const orderSlice = createSlice({
             .addCase(getOrders.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
+                console.log('get orders action.payload: ', action.payload)
                 state.orders = action.payload
             })
             .addCase(getOrders.rejected, (state, action) => {
