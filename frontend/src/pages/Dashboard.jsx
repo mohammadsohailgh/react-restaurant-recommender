@@ -1,30 +1,30 @@
 import { useEffect, useState } from "react"; //
 import { useNavigate } from "react-router-dom"; //used to redierct user
 import { useSelector, useDispatch } from "react-redux"; // used to grab user from state to see if theyre logged in
-import Card from "../components/Card.jsx";
 import OrderForm from "../components/OrderForm";
 import Spinner from "../components/Spinner";
 import OrderItem from "../components/OrderItem";
+import RecommendationItem from "../components/RecommendationItem";
 import Map from "../components/Map.jsx";
 import LargeRecommenderButton from "../components/LargeRecommenderButton";
 import ModalNewExperience from "../components/ModalNewExperience";
-import ModalChooseRestaurant from "../components/ModalChooseRestaurant";
-import { getOrders, reset } from "../features/orders/orderSlice";
+import { getOrders } from "../features/orders/orderSlice";
 import { getPreference } from "../features/preference/preferenceSlice";
+import { getRecommendations, reset } from "../features/recommendation/recommendationSlice";
 import { toast } from 'react-toastify'
-
 
 function Dashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user, isSuccess } = useSelector((state) => state.auth); //get the user from state.auth
-  const { orders, isLoading, isError, message } = useSelector((state) => state.orders); //get the user from state.auth
-  const { globalStatePreference } = useSelector((state) => state.globalStatePreference); //get the user from state.auth
-
+  const { user,  } = useSelector((state) => state.auth); //get the user from state.auth
+  const { orders, message } = useSelector((state) => state.orders); //get the user from state.auth
+  const { recommendations, isError, isSuccess } = useSelector((state) => state.recommendations); //get the user from state.auth
+  
   useEffect(() => {
     if (isError) {
       toast.error(message)
+      console.log(message)
     }
 
     if (!user) {
@@ -32,14 +32,14 @@ function Dashboard() {
     }
 
     dispatch(getOrders()); //RERENDERS THE PAGE THREE TIMES, FIGURE OUT WHY
+    dispatch(getRecommendations())
     dispatch(getPreference())
-
 
     return () => {
       dispatch(reset());
     };
 
-    
+
   }, [user, navigate, isError, message, dispatch]);
 
 
@@ -51,32 +51,53 @@ function Dashboard() {
         <h1>Welcome {user && user.name}</h1>{" "}
         {/* if user exists then display user.name */}
         <p>Recommendations Dashboard</p>
-        {globalStatePreference}
+        {/* {globalStatePreference} */}
       </section>
 
 
-      {/* <div>
-      <input type="submit" value="Search" onClick={onClick} />
-      { showResults ? <p> hello </p> : null }
-        </div> */}
-
       <div className="container">
         <div className="row justify-content-md-center">
-          <LargeRecommenderButton target="#restaurantRecommender" title="Choose a specific restaurant" size="col-sm-6" colour="#A60027" />
-          <LargeRecommenderButton target="#staticBackdrop" title="Recommend a new experience" size="col-sm-6" colour="#FF033E" />
+          {/* <LargeRecommenderButton target="#restaurantRecommender" title="Choose a specific restaurant" size="col-sm-6" colour="#A60027" />
+          <LargeRecommenderButton target="#staticBackdrop" title="Recommend a new experience" size="col-sm-6" colour="#FF033E" /> */}
+
+
+          <p> Choose meal time </p>
+
+          <div className="container">
+            <div className="row justify-content-md-center">
+              <LargeRecommenderButton target="#staticBackdrop" title="Breakfast" foodGroup="00" size="col-sm-4" colour="#ACDAED" />
+              <LargeRecommenderButton target="#staticBackdrop" title="Lunch" foodGroup="10" size="col-sm-4" colour="#F4BB67" />
+              <LargeRecommenderButton target="#staticBackdrop" title="Dinner" foodGroup="01" size="col-sm-4" colour="#CA5555" />
+            </div>
+          </div>
+
         </div>
       </div>
 
       <ModalNewExperience />
-      <ModalChooseRestaurant />
 
-      <section className="heading py-3">
+      {/* <ModalChooseRestaurant /> */}
+
+      <div className="container ">
+        <section className="heading mt-4">
         <h1>Previous three recommendations</h1>{" "}
-      </section>
+        </section>
+
+        {recommendations.length > 0 ? (
+          <div className="justify-content-center row">
+            {recommendations.slice(-3).reverse().map((recommendation) => (
+              <RecommendationItem key={recommendation._id} recommendation={recommendation} />
+            ))}
+          </div>
+        ) : (
+          <h3>You have not set any recommendations</h3>
+        )}
+
+      </div>
 
       <section className="content">
 
-        <OrderForm />
+        {/* <OrderForm />
         {orders.length > 0 ? (
           <div className="orders">
             {orders.map((order) => (
@@ -85,8 +106,7 @@ function Dashboard() {
           </div>
         ) : (
           <h3>You have not set any orders</h3>
-        )}
-        {/* <Map /> */}
+        )} */}
       </section>
     </>
   );

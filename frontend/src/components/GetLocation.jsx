@@ -62,6 +62,7 @@ const GetLocation = () => {
       if (unit === "N") {
         dist = dist * 0.8684;
       }
+    //   console.log(dist);
       return dist;
     }
   }
@@ -83,7 +84,7 @@ const GetLocation = () => {
     } else {
       x.innerHTML = "Geolocation is not supported by this browser.";
     }
-  };
+  }
 
   function showPosition(position) {
     console.log(
@@ -129,8 +130,17 @@ const filterRes = restaurants.cuisines.filter(n => n.restaurants.filter(restaura
       <p> Your lat: {userLat} </p> 
 
     Distance: {distance(userLat, userLong, 51.447364861194764, -2.598244900049596)}
+    {/* {console.log('Distance: ' + distance(userLat, userLong, 51.447364861194764, -2.598244900049596) + ' Miles')} */}
 
-  
+    {/* { console.log( restaurants.map((el) => Math.pow(el, e) % n) ) } */}
+    {/* { console.log( restaurants.map((el) => console.log(el['0000']) )) } */}
+
+    {/* { console.log(JSON.stringify(cuisines) ) } */}
+
+    {/* { console.log( 'cuisines', cuisines ) }
+    { console.log('restaurantNames', restaurantNames ) } 
+    { console.log('allMenuItemNames', allMenuItemNames ) } 
+    { console.log('returnAllBitterItems', returnAllBitterItems ) }  */}
 
 
     {/* {getAllBitterItems("000000000010000")} */}

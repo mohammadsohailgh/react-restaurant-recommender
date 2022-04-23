@@ -18,9 +18,6 @@ const getOrders = asyncHandler(async (req, res) => {
   //   }
   // })
 
-
-
-
   // { "_id" : ObjectId("5314b5c360477752b449eedf"), "count" : 4 }
 
   // const orders = await Order.find( {  } )

@@ -3,13 +3,44 @@ const mongoose = require('mongoose')
 const recommendationSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
+        // required: true,
         ref: 'User'
     },
-    recommendation: {
-        type: mongoose.Schema.Types.ObjectId,
+    restaurant_name: {
+        type: String,
         required: true,
-        ref: 'Recommendation' 
+    },
+    cuisine: {
+        type: String,
+        required: true,
+    },
+    price_range: {
+        type: String,
+        required: true,
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    lat: {
+        type: Number,
+        required: true,
+    },
+    long: {
+        type: Number,
+        required: true,
+    },
+    dish_key: {
+        type: String,
+        required: true,
+    },
+    dish_name: {
+        type: String,
+        required: true,
+    },
+    dish_description: {
+        type: String,
+        required: true,
     },
     review: {
         type: Number, 

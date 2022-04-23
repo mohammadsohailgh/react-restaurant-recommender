@@ -10,8 +10,6 @@ const updatePreference = async (preferenceData, userId, token) => {
         }
     }
     const response = await axios.put(API_URL + userId, preferenceData, config);
-    console.log("preferenceService req data: ", preferenceData)
-    console.log("preferenceService response: ", response.data)
     return response.data;
   };
 

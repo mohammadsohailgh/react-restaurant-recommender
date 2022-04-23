@@ -17,7 +17,6 @@ export const setPreference = createAsyncThunk(
     try {
         const token = thunkAPI.getState().auth.user.token
         const userId = thunkAPI.getState().auth.user._id
-        console.log('preferenceData:',preferenceData)
         return await preferenceService.updatePreference(preferenceData, userId,  token)
     } catch (error) {
         const message =
@@ -62,7 +61,6 @@ export const preferenceSlice = createSlice({
             .addCase(setPreference.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                console.log('action payload preferenceSlice', action.payload)
                 state.globalStatePreference = action.payload.preference
             })
             .addCase(setPreference.rejected, (state, action) => {

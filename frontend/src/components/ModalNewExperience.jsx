@@ -1,10 +1,18 @@
-import LargeRecommenderButton from './LargeRecommenderButton'
-import GetLocation from './GetLocation'
+import { useSelector, useDispatch } from "react-redux"; // used to grab user from state to see if theyre logged in
+import Spinner from "../components/Spinner";
+
 
 function ModelExperienceModal() {
+
+  const { recommendations, isLoading, isSuccess, message } = useSelector((state) => state.recommendations); //get the user from state.auth
+
+  // if (recommendations.length > 0) {
+  const recommendation = recommendations[recommendations.length - 1];
+  // }
+
   return (
     <div>
-        {/* <!-- Modal --> */}
+      {/* <!-- Modal --> */}
       <div
         className="modal fade centered"
         id="staticBackdrop"
@@ -20,26 +28,46 @@ function ModelExperienceModal() {
               <h5 className="modal-title" id="staticBackdropLabel">
                 New experience
               </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
 
-            <GetLocation />
 
-              <p> Choose meal time </p>
+              {isLoading ? (
+                <Spinner />
+              ) : (null)}
 
-              <div className="container">
+              {isSuccess && message === '' && recommendations.length > 0 ?
+                (
+                  <>
+                    <div><span className="fw-bold">Restaurant: </span>{recommendation.restaurant_name}</div>
+                    <div><span className="fw-bold">Cuisine: </span>{recommendation.cuisine}</div>
+                    <div><span className="fw-bold">Price range: </span>{recommendation.price_range}</div>
+                    <div><span className="fw-bold">Recommended dish: </span>{recommendation.dish_name}</div>
+                    <div><span className="fw-bold">Dish description: </span>{recommendation.dish_description}</div>
+                    <div><span className="fw-bold">Address: </span>{recommendation.address}</div>
+                  </>
+                )
+                :
+                (message)
+              }
+
+
+
+
+              {/* <p>Cuisine: {recommendation.cuisine}</div>
+                <p>Dish name: {recommendation.dish_name}</div>
+                <div>Dish description:{recommendation.description}</div> */}
+              {/* <div className="">{new Date(recommendation.createdAt).toLocaleString('en-US')}</div> */}
+
+
+
+
+              {/* <div className="container">
                 <div className="row justify-content-md-center">
-                  <LargeRecommenderButton target="#staticBackdrop" title="Breakfast" size="col-sm-4" colour="#ACDAED" />
-                  <LargeRecommenderButton target="#staticBackdrop" title="Lunch" size="col-sm-4" colour="#F4BB67" />
-                  <LargeRecommenderButton target="#staticBackdrop" title="Dinner" size="col-sm-4" colour="#CA5555" />
+                  
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="modal-footer">
               <button
@@ -49,9 +77,9 @@ function ModelExperienceModal() {
               >
                 Close
               </button>
-              <button type="button" className="btn btn-primary">
+              {/* <button type="button" className="btn btn-primary">
                 Understood
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

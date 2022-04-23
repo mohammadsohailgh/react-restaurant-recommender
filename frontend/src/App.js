@@ -7,6 +7,7 @@ import Reviews from './pages/Reviews';
 import Preferences from './pages/Preferences';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Roulette from './pages/Roulette';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/reviews' element={<Reviews />} />
+            <Route path='/roulette' element={<Roulette />} />
             <Route path='/preferences' element={<Preferences />} />
           </Routes>
         </div>

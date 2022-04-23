@@ -32,6 +32,7 @@ const registerUser = asyncHandler(async (req, res) => {
         email,
         password: hashedPassword,
         role,
+        preference: "0000000011111"
     })
 
     if (user) {

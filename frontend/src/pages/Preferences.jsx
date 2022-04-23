@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react"; //
 import { useNavigate } from "react-router-dom"; //used to redierct user
 import { useSelector, useDispatch } from "react-redux"; // used to grab user from state to see if theyre logged in
-import Card from "../components/Card.jsx";
 import Spinner from "../components/Spinner";
-import { getOrders, reset } from "../features/orders/orderSlice";
-import OrderItem from "../components/OrderItem.jsx";
-import { FaHeart, FaThumbsUp, FaTrash } from "react-icons/fa";
 import React from "react";
-import { setPreference, getPreference } from "../features/preference/preferenceSlice.js";
+import { setPreference, getPreference, reset } from "../features/preference/preferenceSlice.js";
 import { toast } from 'react-toastify'
+import TasteRadarChart from '../components/TasteRadarChart'
+
+import RadarChart from 'react-svg-radar-chart';
+import 'react-svg-radar-chart/build/css/index.css'
+
 
 function Preferences() {
 
@@ -17,8 +18,6 @@ function Preferences() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const allPreferences = "0000001000000";
 
   const [userPreference, setUserPreferences] = useState([
     { name: "Vegetarian", value: '0', position: 0 },
@@ -47,7 +46,11 @@ function Preferences() {
   // Get allergens group
   // const allergens = userPreference.slice(4, 8).map((name, index) => console.log(index, name.name))
 
-
+  const mealTime = 0
+  const dietary = 1 
+  const allergens = 2
+  const taste = 3
+  
   const constructAllPreferences = (p) => {
     const a = p.map((i) => i.value).join("");
     return a
@@ -58,25 +61,23 @@ function Preferences() {
       if (group === "tasteGroup") {
         userPreference[index + 8].value = c;
       } else {
+        if (index === 2) { }
         userPreference[index].value = c;
       }
     });
   };
 
-  // console.log(destructAllPreferences("12221", "tasteGroup"))
-
-  // const a = destructAllPreferences(globalStatePreference)
+  const successToast = () => toast.success('Preferences updated', { autoClose: 100, hideProgressBar: true })
 
   const onChangeDietaryPreference = (e, index) => {
     // e.preventDefault()
-    // console.log('checked val:',e.target.checked)
-    // console.log("e value is:", e.target.value)
     const list = [...userPreference];
     const item = { ...list[index] };
     item.value === '1' ? (item.value = '0') : (item.value = '1');
     list[index] = { ...item };
     dispatch(setPreference(({ preference: constructAllPreferences(list) })))
-    // setUserPreferences(list);
+
+    successToast()
   };
 
   const onChangeTastePreference = (e, index) => {
@@ -84,154 +85,154 @@ function Preferences() {
     list[index] = { ...list[index], value: e.target.value };
     // setUserPreferences(list);
     dispatch(setPreference(({ preference: constructAllPreferences(list) })))
-    console.log('onChangeTastePreference hit')
+
+    successToast()
+
   };
 
   useEffect(() => {
     // const preamble = dietaryPreference.map(i => i === true ? 1 : 0)
     if (isError) {
       toast.error(message)
+      console.log(message)
     }
 
     if (!user) {
       navigate("/login");
     }
 
-    // const preference = userPreference
-    //   .map((i) => i.value)
-    //   .join("");
-
     dispatch(getPreference())
 
-    // if(globalStatePreference !== null || undefined) {
-    //   destructAllPreferences(globalStatePreference.globalStatePreference)
-    // }
-
-    // dispatch(setPreference( {globalStatePreference} ))
-
     console.log("useEffect is hit")
-    // if (globalStatePreference !== null) {
-    // destructAllPreferences(globalStatePreference)
-    // }
 
-    // console.log('destructed', destructAllPreferences(globalStatePreference))
-  
+    return () => {
+      dispatch(reset());
+    };
 
-  }, [navigate, dispatch, user, message, isError, isSuccess]);
+  }, [navigate, dispatch, user, message, isError]);
 
   if (globalStatePreference !== null) {
-    console.log('global state set to local pref state')
     destructAllPreferences(globalStatePreference)
   }
 
-  // if (isSuccess) {
-    // toast.success('Preferences updated')
-  // }
-
-  // if (isLoading) {
-  //   return <Spinner />
-  // }
+  console.log(constructAllPreferences(userPreference).slice(8))
 
   return (
     <div className="container">
-      <section className="heading" style={{ marginBottom: 20 }}>
-        <h1>Preferences</h1>
-      </section>
+      {isSuccess ? (
+        <>
+          <section className="heading" style={{ marginBottom: 20 }}>
+            <h1>Preferences</h1>
+          </section>
 
-      <p>Select your dietary preference</p>
-      {userPreference.slice(0, 8).map(({ name, position, value }) => {
-        return (
-          <React.Fragment key={position}>
-            {name === "Dairy" ? (
-              <p style={{ marginTop: 30 }}>Select your allergens</p>
-            ) : null}
+          <div>
+            <p className="fw-bold mb-1" >Select dietary preference</p>
+            {userPreference.slice(0, 8).map(({ name, position, value }) => {
+              return (
+                <React.Fragment key={position}>
+                  {name === "Dairy" ? (
+                    <p className="fw-bold mt-2 mb-1">Select allergens</p>
+                  ) : null}
 
-            <div className="form-check-inline">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                id={`custom-checkbox-${position}`}
-                name={name}
-                onChange={(e) => onChangeDietaryPreference(e, position)}
-                // onChange={onChangeDietaryPreference() }
-                // defaultChecked= "off"
-                checked={value === '1' ? true : false}
-                style={{ marginRight: 10 }}
-              />
-              <label
-                className="form-check-label"
-                htmlFor={`custom-checkbox-${position}`}
-              >
-                {name}
-              </label>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      id={`custom-checkbox-${position}`}
+                      name={name}
+                      onChange={(e) => onChangeDietaryPreference(e, position)}
+                      checked={value === '1' ? true : false}
+                      style={{ marginRight: 10 }}
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor={`custom-checkbox-${position}`}
+                    >
+                      {name}
+                    </label>
+                  </div>
+                </React.Fragment>
+              );
+            })}
+
+          </div>
+
+
+          <div className="row justify-content-md-center pt-3">
+
+            <div className="fw-bold ">
+              <p>Select your taste preferences</p>
             </div>
-          </React.Fragment>
-        );
-      })}
 
-      <p style={{ marginTop: 30 }}>Select your taste preferences</p>
-      {/* <FaHeart
-          style={{
-            marginRight: 15,
-            marginLeft: 15,
-            color: "yellowgreen",
-            cursor: "pointer",
-          }}
-        />
-        = you love the food
-        <FaThumbsUp
-          style={{
-            marginRight: 15,
-            marginLeft: 15,
-            color: "dodgerblue",
-            cursor: "pointer",
-          }}
-        />
-        = you are willing to try it
-        <FaTrash
-          style={{
-            marginRight: 15,
-            marginLeft: 15,
-            color: "red",
-            cursor: "pointer",
-          }}
-        /> 
-        = you never want the food
-         <br/> */}
+            <div className="row justify-content-md-center">
+              <div className="col-sm-6">
+                <div className="mt-2"  >
+                  {userPreference.slice(8).map(({ name, position, value }) => {
+                    return (
+                      <React.Fragment key={position}>
 
-      <div className="mx-auto w-75"  >
-        {userPreference.slice(8).map(({ name, position }) => {
-          return (
-            <React.Fragment key={position}>
-              {/* range slider */}
-              <label className="form-label">{name}</label>
-              <input
-                defaultValue={userPreference[position].value}
-                type="range"
-                className="form-range"
-                min="0"
-                max="2"
-                step="0"
-                name={name}
-                position={{ position }}
-                // id={`custom-checkbox-${index}`}
-                onChange={(e) => onChangeTastePreference(e, position)}
-              // onChange= {onChangeTastePreference}
-              />
+                        <div className="row">
+                          <div className="col-sm-4 text-end text-center bor ">
+                            {name}
+                          </div>
+                          <div className="col-sm">
+                            <div className="row ">
 
-              {/* Labels for range slider */}
-              <div style={{ fontSize: 13 }}>
-                <div className="row">
-                  <div className="col text-muted text-start">Hate</div>
-                  <div className="col text-muted">Willing to try</div>
-                  <div className="col text-muted text-end pb-5">Love</div>
+                              <input
+                                defaultValue={value}
+                                type="range"
+                                className="form-range"
+                                min="0"
+                                max="2"
+                                step="0"
+                                name={name}
+                                position={{ position }}
+                                onChange={(e) => onChangeTastePreference(e, position)}
+                              />
+                            </div>
+                            <div className="row " style={{ fontSize: 13 }}>
+
+                              <div className="col-3 text-muted text-start">
+                                Hate
+                              </div>
+                              <div className="col-6 text-muted">
+                                Willing to try
+                              </div>
+                              <div className="col-3 text-muted text-end mb-3">
+                                Love
+                              </div>
+
+                            </div>
+                          </div>
+
+                        </div>
+
+
+                      </React.Fragment>
+                    );
+                  })}
                 </div>
+
               </div>
 
-            </React.Fragment>
-          );
-        })}
-      </div>
+              <div className="col-sm-5 align-self-start ">
+                <p className="text-muted mb-0" style={{ fontSize: 13 }}>To edit chart, change sliders</p>
+
+
+
+                <TasteRadarChart
+                  taste_group={constructAllPreferences(userPreference).slice(8)}
+                  size={300}
+                  colour='green'
+                />
+              </div>
+            </div>
+
+          </div>
+
+        </>
+      ) : (null)}
+
 
 
       {/* <div className="album  ">
@@ -251,9 +252,40 @@ function Preferences() {
           </div>
         </div> */}
 
+      {/* <FaHeart
+          style={{
+            marginRight: 15,
+            marginLeft: 15,
+            color: "yellowgreen",
+            cursor: "pointer",
+          }}
+          />
+          = you love the food
+          <FaThumbsUp
+            style={{
+              marginRight: 15,
+              marginLeft: 15,
+              color: "dodgerblue",
+              cursor: "pointer",
+            }}
+          />
+          = you are willing to try it
+          <FaTrash
+            style={{
+              marginRight: 15,
+              marginLeft: 15,
+              color: "red",
+              cursor: "pointer",
+            }}
+          /> 
+          = you never want the food
+          <br/> */}
+
+
     </div>
   );
 
 }
 
 export default Preferences;
+
