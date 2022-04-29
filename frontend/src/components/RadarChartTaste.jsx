@@ -1,7 +1,7 @@
 import RadarChart from 'react-svg-radar-chart';
 
 
-function TasteRadarChart({taste_group, size, colour}) {
+function TasteRadarChart({taste_group, data2, size, colour, colour_2}) {
 
     // react radar chart
     const data = [
@@ -14,9 +14,10 @@ function TasteRadarChart({taste_group, size, colour}) {
                 savoury: (parseInt(taste_group[4]) - 0) / (2 - 0)
             },
             meta: { color: colour }
-
         }
     ]
+    if(data2){ data.push(data2)}
+    if(colour_2){ data.push(colour_2)}
 
     const captions = {
         // columns

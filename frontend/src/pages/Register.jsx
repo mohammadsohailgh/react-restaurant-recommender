@@ -30,7 +30,7 @@ function Register() {
     }
 
     if (isSuccess || user) {
-      navigate('/')
+      navigate('/preferences')
     }
 
     dispatch(reset())

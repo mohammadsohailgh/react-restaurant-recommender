@@ -5,7 +5,7 @@ import Spinner from "../components/Spinner";
 import React from "react";
 import { setPreference, getPreference, reset } from "../features/preference/preferenceSlice.js";
 import { toast } from 'react-toastify'
-import TasteRadarChart from '../components/TasteRadarChart'
+import RadarChartTaste from '../components/RadarChartTaste'
 
 import RadarChart from 'react-svg-radar-chart';
 import 'react-svg-radar-chart/build/css/index.css'
@@ -30,11 +30,11 @@ function Preferences() {
     { name: "Gluten", value: '0', position: 6 },
     { name: "Nuts", value: '0', position: 7 },
 
-    { name: "Bitter", value: '1', position: 8 },
-    { name: "Sweet", value: '1', position: 9 },
-    { name: "Sour", value: '1', position: 10 },
-    { name: "Salty", value: '1', position: 11 },
-    { name: "Savoury", value: '1', position: 12 },
+    { name: "Bitter", value: '1', position: 8, description: "Bitter foods include dark, leafy greens including kale, dandelion greens, and broccoli. Often, leafy vegetables increase in bitterness as they mature. Pure cocoa has a distinct bitterness, which can be used to balance flavours like sweet or spicy in other foods.  As with most bitter flavours, it can be undesirable on its own, but when combined with other flavour elements, it can provide dimension and balance. Citrus peels are often added to spice blends or sweet drinks or desserts for this reason. Orange marmalade is an excellent example of pairing bitter and sweet. Other bitter flavoured fruits and vegetables include grapefruit, bitter melon mustard greens, and olives. Before shying away from bitter ingredients in the future, explore how they can be combined with complimentary tastes to build a complex and enjoyable flavour profile."},
+    { name: "Sweet", value: '1', position: 9, description: "Sweet foods include" },
+    { name: "Sour", value: '1', position: 10, description: "Sour foods include" },
+    { name: "Salty", value: '1', position: 11, description: "Salty foods include" },
+    { name: "Savoury", value: '1', position: 12, description: "Savoury foods include" },
   ]);
 
   // Get taste group
@@ -46,11 +46,7 @@ function Preferences() {
   // Get allergens group
   // const allergens = userPreference.slice(4, 8).map((name, index) => console.log(index, name.name))
 
-  const mealTime = 0
-  const dietary = 1 
-  const allergens = 2
-  const taste = 3
-  
+
   const constructAllPreferences = (p) => {
     const a = p.map((i) => i.value).join("");
     return a
@@ -67,7 +63,7 @@ function Preferences() {
     });
   };
 
-  const successToast = () => toast.success('Preferences updated', { autoClose: 100, hideProgressBar: true })
+  const successToast = () => toast.success('Preferences updated', { autoClose: 1000, hideProgressBar: true })
 
   const onChangeDietaryPreference = (e, index) => {
     // e.preventDefault()
@@ -115,17 +111,18 @@ function Preferences() {
     destructAllPreferences(globalStatePreference)
   }
 
+
   console.log(constructAllPreferences(userPreference).slice(8))
 
   return (
-    <div className="container">
+    <div className="container border">
       {isSuccess ? (
         <>
-          <section className="heading" style={{ marginBottom: 20 }}>
+          <section className="heading border" style={{ marginBottom: 20 }}>
             <h1>Preferences</h1>
           </section>
 
-          <div>
+          <div className="border justify-content-center">
             <p className="fw-bold mb-1" >Select dietary preference</p>
             {userPreference.slice(0, 8).map(({ name, position, value }) => {
               return (
@@ -158,7 +155,7 @@ function Preferences() {
           </div>
 
 
-          <div className="row justify-content-md-center pt-3">
+          <div className="row justify-content-center pt-3">
 
             <div className="fw-bold ">
               <p>Select your taste preferences</p>
@@ -167,13 +164,15 @@ function Preferences() {
             <div className="row justify-content-md-center">
               <div className="col-sm-6">
                 <div className="mt-2"  >
-                  {userPreference.slice(8).map(({ name, position, value }) => {
+                  {userPreference.slice(8).map(({ name, position, value, description }) => {
                     return (
                       <React.Fragment key={position}>
 
                         <div className="row">
                           <div className="col-sm-4 text-end text-center bor ">
                             {name}
+
+                            <p className="text-muted mb-0" data-bs-toggle="tooltip" title={description} style={{ fontSize: 13 }}>Hover for example</p>
                           </div>
                           <div className="col-sm">
                             <div className="row ">
@@ -207,7 +206,6 @@ function Preferences() {
 
                         </div>
 
-
                       </React.Fragment>
                     );
                   })}
@@ -217,14 +215,12 @@ function Preferences() {
 
               <div className="col-sm-5 align-self-start ">
                 <p className="text-muted mb-0" style={{ fontSize: 13 }}>To edit chart, change sliders</p>
-
-
-
-                <TasteRadarChart
-                  taste_group={constructAllPreferences(userPreference).slice(8)}
+                <RadarChartTaste
+                  taste_group={globalStatePreference.slice(8)}
                   size={300}
                   colour='green'
                 />
+
               </div>
             </div>
 
@@ -232,55 +228,6 @@ function Preferences() {
 
         </>
       ) : (null)}
-
-
-
-      {/* <div className="album  ">
-          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-md-4 g-3">
-            <div className="col">
-              <Card title="Pizza" description="" image="" />
-            </div>
-            <div className="col">
-              <Card title="Pizza" description="" image="" />
-            </div>
-            <div className="col">
-              <Card title="Pizza" description="" image="" />
-            </div>
-            <div className="col">
-              <Card title="Pizza" description="" image="" />
-            </div>
-          </div>
-        </div> */}
-
-      {/* <FaHeart
-          style={{
-            marginRight: 15,
-            marginLeft: 15,
-            color: "yellowgreen",
-            cursor: "pointer",
-          }}
-          />
-          = you love the food
-          <FaThumbsUp
-            style={{
-              marginRight: 15,
-              marginLeft: 15,
-              color: "dodgerblue",
-              cursor: "pointer",
-            }}
-          />
-          = you are willing to try it
-          <FaTrash
-            style={{
-              marginRight: 15,
-              marginLeft: 15,
-              color: "red",
-              cursor: "pointer",
-            }}
-          /> 
-          = you never want the food
-          <br/> */}
-
 
     </div>
   );

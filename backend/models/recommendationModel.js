@@ -44,7 +44,7 @@ const recommendationSchema = mongoose.Schema({
     },
     review: {
         type: Number, 
-        enum: [1,2,3]//1=love, 2=like (willing to try again), 3=hate
+        enum: [1,2,3]// 1=hate, 2=like (willing to try again), 3=love, 
     }
 }, {
     timestamps: true,
