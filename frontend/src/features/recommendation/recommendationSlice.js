@@ -125,12 +125,18 @@ export const recommendationSlice = createSlice({
                 state.isSuccess = true
                 console.log('update recommendations action.payload: ', action.payload)
                 // state.recommendations.push(action.payload)
-                state.recommendations.forEach(e => {
-                    // console.log(e._id)
-                    if (e._id === action.payload._id) {
-                        e = action.payload
-                    }
-                });
+                // state.recommendations.forEach(e => {
+                //     // console.log(e._id)
+                //     if (e._id === action.payload._id) {
+                //         e = action.payload
+                //     }
+                // });
+
+                // state.recommendations.find(recommendation => recommendation._id === action.payload._id).mark = "marked!"
+
+                const index = state.recommendations.findIndex(x => x._id === action.payload._id)
+                state.recommendations[index] = action.payload
+
             })
             .addCase(updateRecommendation.rejected, (state, action) => {
                 state.isLoading = false

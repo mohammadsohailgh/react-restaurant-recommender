@@ -52,21 +52,21 @@ function OrderItem({ recommendation }) {
                             <small className="text-muted">Please only review if you've tried the dish</small>
 
                             <div className="col mx-2">
-                                <button onClick={(e) => onSubmit(e)} value={3} type='submit' className="btn btn-success btn-sm btn-block ">
+                                <button onClick={(e) => onSubmit(e)} value={2} type='submit' className="btn btn-success btn-sm btn-block ">
                                     <FaHeart style={{ color: "yellowgreen" }} />
                                     Loved it
                                 </button>
                             </div>
 
                             <div className="col mx-2">
-                                <button onClick={(e) => onSubmit(e)} value={2} type='submit' className="btn btn-warning btn-sm btn-block ">
+                                <button onClick={(e) => onSubmit(e)} value={1} type='submit' className="btn btn-warning btn-sm btn-block ">
                                     <FaThumbsUp />
                                     Willing to try again
                                 </button>
                             </div>
 
                             <div className="col mx-2">
-                                <button onClick={(e) => onSubmit(e)} value={1} type='submit' className="btn btn-danger btn-sm btn-block">
+                                <button onClick={(e) => onSubmit(e)} value={0} type='submit' className="btn btn-danger btn-sm btn-block">
                                     <FaTrash />
                                     Hated it
                                 </button>
