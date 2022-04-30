@@ -18,9 +18,10 @@ function Dashboard() {
   const dispatch = useDispatch();
 
   const { user,  } = useSelector((state) => state.auth); //get the user from state.auth
-  const { orders, message } = useSelector((state) => state.orders); //get the user from state.auth
-  const { recommendations, isError, isSuccess } = useSelector((state) => state.recommendations); //get the user from state.auth
-  
+  const { orders } = useSelector((state) => state.orders); //get the user from state.auth
+  const { recommendations, isError, isSuccess, message } = useSelector((state) => state.recommendations); //get the user from state.auth
+  const [recommendationType, setRecommendationType] = useState()
+
   useEffect(() => {
     if (isError) {
       toast.error(message)
@@ -56,10 +57,30 @@ function Dashboard() {
 
 
       <div className="container">
-        <div className="row justify-content-md-center">
+
+      <div className="">
+
+      <p> Choose how you are feeling </p>
+
+
+          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked/>
+            <label class="btn btn-outline-danger" for="btnradio1">Adventurous</label>
+
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"/>
+            <label class="btn btn-outline-success" for="btnradio2">Safe</label>
+
+            {/* <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"/>
+            <label class="btn btn-outline-primary" for="btnradio3">Radio 3</label> */}
+          </div>
+          
+          </div>
+
+
+        <div className="row justify-content-md-center mt-3">
           {/* <LargeRecommenderButton target="#restaurantRecommender" title="Choose a specific restaurant" size="col-sm-6" colour="#A60027" />
           <LargeRecommenderButton target="#staticBackdrop" title="Recommend a new experience" size="col-sm-6" colour="#FF033E" /> */}
-
+          
 
           <p> Choose meal time </p>
 

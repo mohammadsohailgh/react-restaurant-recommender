@@ -9,8 +9,8 @@ export const store = configureStore({
     auth: authReducer,
     orders: orderReducer,
     globalStatePreference: preferenceReducer,
-    recommendations: recommendationReducer,
-  },
+    recommendations: recommendationReducer
+    },
 })
 
 export default store

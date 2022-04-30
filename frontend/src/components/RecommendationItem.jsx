@@ -10,14 +10,14 @@ import { FaHeart, FaThumbsUp, FaTrash } from "react-icons/fa";
 
 function OrderItem({ recommendation }) {
 
-  const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
     const onSubmit = e => {
         e.preventDefault()
         // console.log(e.target.value)        
         // console.log(recommendation._id)    
-        
-        dispatch(updateRecommendation( {id: recommendation._id, review: e.target.value}  ))
+
+        dispatch(updateRecommendation({ id: recommendation._id, review: e.target.value }))
     }
 
 
@@ -48,7 +48,10 @@ function OrderItem({ recommendation }) {
                         </div>
                     </div>
 
-                        <div className="row g-0 mb-3"> 
+
+                    {recommendation.review === null || recommendation.review === undefined ? (
+                        <div className="row g-0 mb-3">
+
                             <small className="text-muted">Please only review if you've tried the dish</small>
 
                             <div className="col mx-2">
@@ -71,8 +74,16 @@ function OrderItem({ recommendation }) {
                                     Hated it
                                 </button>
                             </div>
-
                         </div>
+
+                    ) : ( 
+                        <>
+                        {recommendation.review}
+                        {console.log('reviewItem:', recommendation.review ) }
+                        </>
+                    ) }
+
+
                 </div>
             </div>
         </>

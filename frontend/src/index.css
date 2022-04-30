@@ -51,7 +51,7 @@ h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 0;
+  padding: 10px 0;
   border-bottom: 1px solid #e6e6e6;
   margin-bottom: 60px;
 }
@@ -89,7 +89,7 @@ h3 {
 .heading {
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   padding: 0 20px;
 }
 
@@ -236,7 +236,7 @@ h3 {
   border: 8px solid;
   border-color: #000 transparent #555 transparent;
   border-radius: 50%;
-  animation: spin 1.2s linear infinite;
+  animation: spin 5s linear infinite;
 }
 
 @keyframes spin {

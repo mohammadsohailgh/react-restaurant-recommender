@@ -66,7 +66,7 @@ function Preferences() {
   const successToast = () => toast.success('Preferences updated', { autoClose: 1000, hideProgressBar: true })
 
   const onChangeDietaryPreference = (e, index) => {
-    // e.preventDefault()
+    // e.preventDefault()\
     const list = [...userPreference];
     const item = { ...list[index] };
     item.value === '1' ? (item.value = '0') : (item.value = '1');
@@ -112,7 +112,9 @@ function Preferences() {
   }
 
 
-  console.log(constructAllPreferences(userPreference).slice(8))
+  if (isLoading) {
+    return <Spinner />
+  }
 
   return (
     <div className="container border">
@@ -169,10 +171,11 @@ function Preferences() {
                       <React.Fragment key={position}>
 
                         <div className="row">
-                          <div className="col-sm-4 text-end text-center bor ">
+                          <div className="col-sm-5 text-end text-center border ">
                             {name}
 
-                            <p className="text-muted mb-0" data-bs-toggle="tooltip" title={description} style={{ fontSize: 13 }}>Hover for example</p>
+                            {/* <p className="text-muted mb-0" data-bs-toggle="tooltip" title={description} style={{ fontSize: 13 }}>Click for example</p> */}
+                            <button type="button" class="btn btn-link" data-bs-toggle="tooltip" title={description} style={{ fontSize: 13 }}> Click for example </button>
                           </div>
                           <div className="col-sm">
                             <div className="row ">
@@ -214,7 +217,7 @@ function Preferences() {
               </div>
 
               <div className="col-sm-5 align-self-start ">
-                <p className="text-muted mb-0" style={{ fontSize: 13 }}>To edit chart, change sliders</p>
+                <p className="text-muted mb-0" style={{ fontSize: 13 }}>Chart will automatically update <br/> when sliders moved</p>
                 <RadarChartTaste
                   taste_group={globalStatePreference.slice(8)}
                   size={300}
