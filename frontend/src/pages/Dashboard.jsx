@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react"; //
 import { useNavigate } from "react-router-dom"; //used to redierct user
 import { useSelector, useDispatch } from "react-redux"; // used to grab user from state to see if theyre logged in
-import OrderForm from "../components/OrderForm";
-import Spinner from "../components/Spinner";
-import OrderItem from "../components/OrderItem";
 import RecommendationItem from "../components/RecommendationItem";
 import Map from "../components/Map.jsx";
 import LargeRecommenderButton from "../components/LargeRecommenderButton";
 import ModalNewExperience from "../components/ModalNewExperience";
 import { getOrders } from "../features/orders/orderSlice";
 import { getPreference } from "../features/preference/preferenceSlice";
-import { getRecommendations, reset } from "../features/recommendation/recommendationSlice";
+import { getRecommendations } from "../features/recommendation/recommendationSlice";
 import { toast } from 'react-toastify'
 
 function Dashboard() {
@@ -46,20 +43,12 @@ function Dashboard() {
   }, [user, navigate, isError, message, dispatch]);
 
   const recommendationTypeOnChange = (e) => {
-   
     setFeelingType(e.target.id)
-    console.log(feelingType)
-    setTimeout(() => {
-      
-      setSuccess(false)
-
-    }, 3000);
- 
+    console.log(feelingType) 
   }
 
   return (
     <>
-      {/* {distance(51.489280, -2.570609, 51.49978637338046, -2.548983093114162, "M")} */}
 
       <section className="heading">
         <h1>Welcome {user && user.name}</h1>{" "}
@@ -78,7 +67,7 @@ function Dashboard() {
             <label className="btn btn-outline-primary" htmlFor="1">Safe</label>
 
             <br/>
-            {success? ( feelingType   ) :(null)}
+
           </div>
 
 
@@ -111,7 +100,7 @@ function Dashboard() {
 
         {recommendations.length > 0 ? (
           <div className="justify-content-center row">
-            {recommendations.slice(-3).reverse().map((recommendation) => (
+            {recommendations.slice(0,3).map((recommendation) => (
               <RecommendationItem key={recommendation._id} recommendation={recommendation} />
             ))}
           </div>

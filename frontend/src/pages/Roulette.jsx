@@ -1,6 +1,6 @@
 import React from 'react'
 import { Wheel } from 'react-custom-roulette'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 
 function Roulette() {

@@ -111,7 +111,7 @@ export const recommendationSlice = createSlice({
                 state.isLoading = false
                 state.isSuccess = true
                 console.log('get recommendations action.payload: ', action.payload)
-                state.recommendations = action.payload
+                state.recommendations = action.payload.reverse()
             })
             .addCase(getRecommendations.rejected, (state, action) => {
                 state.isLoading = false

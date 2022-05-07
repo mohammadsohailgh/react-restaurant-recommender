@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react"; //
 import { useNavigate } from "react-router-dom"; //used to redierct user
 import { useSelector, useDispatch } from "react-redux"; // used to grab user from state to see if theyre logged in
-import Spinner from "../components/Spinner";
 import React from "react";
 import { setPreference, getPreference, reset } from "../features/preference/preferenceSlice.js";
 import { toast } from 'react-toastify'
 import RadarChartTaste from '../components/RadarChartTaste'
 
-import RadarChart from 'react-svg-radar-chart';
 import 'react-svg-radar-chart/build/css/index.css'
-
 
 function Preferences() {
 
-  const { globalStatePreference, isSuccess, isLoading, isError, message } = useSelector((state) => state.globalStatePreference); //get the user from state.auth
+  const { globalStatePreference, isSuccess, isError, message } = useSelector((state) => state.globalStatePreference); //get the user from state.auth
   const { user } = useSelector((state) => state.auth); //get the user from state.auth
 
   const navigate = useNavigate();
@@ -36,16 +33,6 @@ function Preferences() {
     { name: "Salty", value: '1', position: 11, description: "Salt, soy sauce, red miso. The degree to which sodium is detectable in food. It is the oldest known flavoring agent in the world. Salt acts to enhance flavors in food by brightening the other flavors in the dish. We all know the taste of salty. The crunchy snack food industry is built on pushing the envelope of salty food. Lot’s wife was punished with salt because she betrayed her guests by requesting salt from her neighbors, alerting them to the presence of strangers. When used properly, salt is almost a background element, only noticed if it’s missing. Too much salt, and a dish can become unpalatable." },
     { name: "Savoury", value: '1', position: 12, description: "Meat, eggplant, mushrooms, beans, MSG. savoury uses ingredients whose flavors are commonly described as earthy or meaty. This is the elusive “fifth taste” that registers on a person’s tongue. Technically, it is the detection of glutamates in food. Glutamates are an amino acid, the metabolic product of protein. And, if it hasn’t dawned on you yet, it is the ‘G’ in MSG – Monosodium Glutamate." },
   ]);
-
-  // Get taste group
-  // const taste = userPreference.slice(8).map((name, index) => console.log(index, name.name))
-
-  // Get dietary preference group
-  // const diet = userPreference.slice(0,4).map((name, index) => console.log(index, name.name))
-
-  // Get allergens group
-  // const allergens = userPreference.slice(4, 8).map((name, index) => console.log(index, name.name))
-
 
   const constructAllPreferences = (p) => {
     const a = p.map((i) => i.value).join("");
@@ -110,11 +97,6 @@ function Preferences() {
     destructAllPreferences(globalStatePreference)
   }
 
-
-  // if (isLoading) {
-  //   return <Spinner />
-  // }
-
   return (
     <div className="container ">
       {isSuccess ? (
@@ -174,7 +156,7 @@ function Preferences() {
                             {name}
 
                             {/* <p className="text-muted mb-0" data-bs-toggle="tooltip" title={description} style={{ fontSize: 13 }}>Click for example</p> */}
-                            <button type="button" class="btn btn-link" data-bs-toggle="tooltip" title={description} style={{ fontSize: 13 }}> Click for example </button>
+                            <button type="button" className="btn btn-link" data-bs-toggle="tooltip" title={description} style={{ fontSize: 13 }}> Click for example </button>
                           </div>
                           <div className="col-sm">
                             <div className="row ">

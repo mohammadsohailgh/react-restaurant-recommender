@@ -2,14 +2,13 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"; // used to grab user from state to see if theyre logged in
 import { createRecommendation, reset } from "../features/recommendation/recommendationSlice.js";
 import { toast } from 'react-toastify'
-import Spinner from "../components/Spinner";
 
 
 function LargeRecommenderButton({ target, title, foodGroup, size, colour }) {
 
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth); //get the user from state.auth
-  const { recommendations, isError, message, isLoading } = useSelector((state) => state.recommendations); //get the user from state.auth
+  const { isError, message } = useSelector((state) => state.recommendations); //get the user from state.auth
   const { globalStatePreference } = useSelector((state) => state.globalStatePreference); //get the user from state.auth
 
   const [userLocation, setUserLocation] = useState({
@@ -37,27 +36,13 @@ function LargeRecommenderButton({ target, title, foodGroup, size, colour }) {
   }
 
   function showPosition(position) {
-    dispatch(createRecommendation({lat: position.coords.latitude, long: position.coords.longitude, userPreference: foodGroup + globalStatePreference}))    
+    dispatch(createRecommendation({ lat: position.coords.latitude, long: position.coords.longitude, userPreference: foodGroup + globalStatePreference }))
   }
-
-  
 
   function handleSubmit(e) {
     e.preventDefault();
     getLocation()
-    // dispatch(createRecommendation(userLocation))
-
-    // console.log('Large recommender button hit delayed!!!!!')
-
-    // setShowLoader(true)
-    // if (showLoader)  {
-    // return <Spinner />
-    // } 
-
-}
-  
-
-
+  }
 
   useEffect(() => {
     if (isError) {
@@ -65,7 +50,7 @@ function LargeRecommenderButton({ target, title, foodGroup, size, colour }) {
       console.log(message)
     }
 
-    if(userLocation.userLat !== null) {
+    if (userLocation.userLat !== null) {
       console.log({ userLocation })
     }
 

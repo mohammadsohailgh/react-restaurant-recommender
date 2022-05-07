@@ -1,7 +1,5 @@
-import { useSelector, useDispatch } from 'react-redux'
-import { reset, updateRecommendation } from '../features/recommendation/recommendationSlice'
-import { useState, useEffect } from 'react'
-import { toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
+import { updateRecommendation } from '../features/recommendation/recommendationSlice'
 import RadarChartTaste from './RadarChartTaste'
 
 
@@ -14,9 +12,6 @@ function OrderItem({ recommendation }) {
 
     const onSubmit = e => {
         e.preventDefault()
-        // console.log(e.target.value)        
-        // console.log(recommendation._id)    
-
         dispatch(updateRecommendation({ id: recommendation._id, review: e.target.value }))
     }
 
@@ -77,7 +72,7 @@ function OrderItem({ recommendation }) {
                         </div>
 
                     ) : ( 
-                       null
+                        <div> Your review for this dish   {recommendation.review} </div>
                     ) }
 
 
