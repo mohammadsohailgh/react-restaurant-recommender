@@ -77,10 +77,7 @@ function OrderItem({ recommendation }) {
                         </div>
 
                     ) : ( 
-                        <>
-                        {recommendation.review}
-                        {console.log('reviewItem:', recommendation.review ) }
-                        </>
+                       null
                     ) }
 
 

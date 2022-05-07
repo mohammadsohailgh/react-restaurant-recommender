@@ -1,14 +1,51 @@
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux"; // used to grab user from state to see if theyre logged in
 import Spinner from "../components/Spinner";
-
 
 function ModelExperienceModal() {
 
   const { recommendations, isLoading, isSuccess, message } = useSelector((state) => state.recommendations); //get the user from state.auth
+  const [showLoader, setShowLoader] = useState(true)
+  const [showLoaderText, setShowLoaderText] = useState('')
+  const [animFinished, setAnimFinished] = useState(false)
 
-  // if (recommendations.length > 0) {
   const recommendation = recommendations[recommendations.length - 1];
-  // }
+  
+  useEffect(() => {
+
+    if (isLoading)  {
+      setShowLoader(true)
+      setShowLoaderText('Getting your location')
+  
+      setTimeout(function () {
+        // setShowLoader(false)
+        setShowLoaderText('Finding local restaurants')
+      }, 2000);
+
+      // timeout(2000, function() {setShowLoaderText('loading 2')} )
+
+      setTimeout(function () {
+        // setShowLoader(false)
+        setShowLoaderText('Removing foods with allergens')
+      }, 4000);
+
+      // timeout(3000, function() {setShowLoaderText('loading 3')} )
+
+      setTimeout(function () {
+        // setShowLoader(false)
+        setShowLoaderText('Preference filtering')
+      }, 6000);
+
+      setTimeout(function () {
+        console.log('TIMEOUUUT Large recommender button hit delayed!!!!!')
+        setShowLoader(false)
+      }, 8000);
+
+      // timeout(4000, function() { setShowLoader(false) } )
+
+    } 
+  
+  }, [isLoading] )
 
   return (
     <div>
@@ -32,12 +69,25 @@ function ModelExperienceModal() {
             </div>
             <div className="modal-body">
 
+              {showLoader ? (
+                <>
+                 {/* <Spinner loadText = {showLoaderText}/> */}
 
-              {isLoading ? (
-                <Spinner />
+                 {/* <div class="spinner-grow" style = {{ width: 100 , height: 100 }}   role="status">
+                </div> */}
+
+                 <div class="spinner-border" style = {{ width: 100 , height: 100 }} role="status">
+                  {/* <div class="spinner-grow" style = {{ width: 97 , height: 97 }}   role="status"> </div> */}
+                </div>
+
+                <div className="row justify-content-center">
+                  <h1 className="display-4"> {showLoaderText} </h1>
+                </div>
+
+                </>
               ) : (null)}
 
-              {isSuccess && message === '' && recommendations.length > 0 ?
+              { !showLoader && isSuccess && message === '' && recommendations.length > 0 ?
                 (
                   <>
                     <div><span className="fw-bold">Restaurant: </span>{recommendation.restaurant_name}</div>
@@ -49,25 +99,11 @@ function ModelExperienceModal() {
                   </>
                 )
                 :
-                (message)
+                (
+                   !showLoader ? ( message ) : (null)
+                  )
               }
 
-
-
-
-              {/* <p>Cuisine: {recommendation.cuisine}</div>
-                <p>Dish name: {recommendation.dish_name}</div>
-                <div>Dish description:{recommendation.description}</div> */}
-              {/* <div className="">{new Date(recommendation.createdAt).toLocaleString('en-US')}</div> */}
-
-
-
-
-              {/* <div className="container">
-                <div className="row justify-content-md-center">
-                  
-                </div>
-              </div> */}
             </div>
             <div className="modal-footer">
               <button
@@ -77,9 +113,7 @@ function ModelExperienceModal() {
               >
                 Close
               </button>
-              {/* <button type="button" className="btn btn-primary">
-                Understood
-              </button> */}
+              
             </div>
           </div>
         </div>
@@ -91,6 +125,8 @@ function ModelExperienceModal() {
 
     </div>
   )
+
+            
 }
 
 export default ModelExperienceModal

@@ -91,7 +91,8 @@ export const recommendationSlice = createSlice({
                 state.isLoading = false
                 state.isSuccess = true  
                 console.log(action.payload)
-                if(action.payload === "No food available for desired preferences within your location") {
+                if(action.payload === "204") {
+                    console.log("CHANGED!!!!!")
                     state.message = "No food dishes were found with your current selected preferences"
                 } else {
                     state.message = ''
@@ -133,7 +134,7 @@ export const recommendationSlice = createSlice({
                 // });
 
                 // state.recommendations.find(recommendation => recommendation._id === action.payload._id).mark = "marked!"
-
+                
                 const index = state.recommendations.findIndex(x => x._id === action.payload._id)
                 state.recommendations[index] = action.payload
 

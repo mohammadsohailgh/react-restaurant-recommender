@@ -17,10 +17,11 @@ function Dashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user,  } = useSelector((state) => state.auth); //get the user from state.auth
+  const { user, } = useSelector((state) => state.auth); //get the user from state.auth
   const { orders } = useSelector((state) => state.orders); //get the user from state.auth
   const { recommendations, isError, isSuccess, message } = useSelector((state) => state.recommendations); //get the user from state.auth
-  const [recommendationType, setRecommendationType] = useState()
+  const [feelingType, setFeelingType] = useState(0)
+  const [success, setSuccess] = useState(false)
 
   useEffect(() => {
     if (isError) {
@@ -35,14 +36,26 @@ function Dashboard() {
     dispatch(getOrders()); //RERENDERS THE PAGE THREE TIMES, FIGURE OUT WHY
     dispatch(getRecommendations())
     dispatch(getPreference())
+    // dispatch(set())
 
-    return () => {
-      dispatch(reset());
-    };
+    // return () => {
+    //   dispatch(reset());
+    // };
 
 
   }, [user, navigate, isError, message, dispatch]);
 
+  const recommendationTypeOnChange = (e) => {
+   
+    setFeelingType(e.target.id)
+    console.log(feelingType)
+    setTimeout(() => {
+      
+      setSuccess(false)
+
+    }, 3000);
+ 
+  }
 
   return (
     <>
@@ -52,35 +65,27 @@ function Dashboard() {
         <h1>Welcome {user && user.name}</h1>{" "}
         {/* if user exists then display user.name */}
         <p>Recommendations Dashboard</p>
-        {/* {globalStatePreference} */}
       </section>
 
-
       <div className="container">
+  
+          <p> Choose how you are feeling </p>
+          <div className="btn-group" role="group" aria-label="Basic radio toggle button group" onChange={recommendationTypeOnChange}>
+            <input type="radio" className="btn-check" name="btnradio" id="0" autoComplete="off" defaultChecked />
+            <label className="btn btn-outline-primary" htmlFor="0">Adventurous</label>
 
-      <div className="">
+            <input type="radio" className="btn-check" name="btnradio" id="1" autoComplete="off"/>
+            <label className="btn btn-outline-primary" htmlFor="1">Safe</label>
 
-      <p> Choose how you are feeling </p>
-
-
-          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked/>
-            <label class="btn btn-outline-danger" for="btnradio1">Adventurous</label>
-
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"/>
-            <label class="btn btn-outline-success" for="btnradio2">Safe</label>
-
-            {/* <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"/>
-            <label class="btn btn-outline-primary" for="btnradio3">Radio 3</label> */}
-          </div>
-          
+            <br/>
+            {success? ( feelingType   ) :(null)}
           </div>
 
 
         <div className="row justify-content-md-center mt-3">
           {/* <LargeRecommenderButton target="#restaurantRecommender" title="Choose a specific restaurant" size="col-sm-6" colour="#A60027" />
           <LargeRecommenderButton target="#staticBackdrop" title="Recommend a new experience" size="col-sm-6" colour="#FF033E" /> */}
-          
+
 
           <p> Choose meal time </p>
 
@@ -101,7 +106,7 @@ function Dashboard() {
 
       <div className="container ">
         <section className="heading mt-4">
-        <h1>Previous three recommendations</h1>{" "}
+          <h1>Previous three recommendations</h1>{" "}
         </section>
 
         {recommendations.length > 0 ? (

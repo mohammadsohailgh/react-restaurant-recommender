@@ -150,7 +150,7 @@ const setRecommendation = asyncHandler(async (req, res) => {
   const singleRecommendation = recommendations[0]
 
   if (!singleRecommendation) {
-    res.status(200).json('No food available for desired preferences within your location');
+    res.status(200).json('204');
   }
 
   const recommendation = await Recommendation.create({

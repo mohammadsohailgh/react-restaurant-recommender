@@ -102,24 +102,6 @@ const GetLocation = () => {
     // lat = position.coords.latitude
   }
 
-const cuisines = restaurants.cuisines.map( n => n.cuisine)
-const restaurantNames = restaurants.cuisines.map(n => n.restaurants.map(restaurant => restaurant.restaurantName ))
-const allMenuItemNames = restaurants.cuisines.flatMap(n => n.restaurants.flatMap(restaurant => restaurant.menu.map( menuItem => menuItem.itemName ) ))
-const returnAllBitterItems = (restaurants.cuisines.map(n => n.restaurants).filter(restaurants => restaurants))
-
-const shallowRestaurants = {...restaurants}
-
-
-
-const getAllBitterItems = (userPreferences) => {
-  const allBitterItems = restaurants.cuisines.flatMap(n => n.restaurants.flatMap(restaurant => restaurant.menu.map( menuItem => menuItem.itemName ) ))
-}
-
-const findNearestFiveRestaurants = restaurants.cuisines.map(n => n.restaurants.map(restaurant => [restaurant.lat, restaurant.long] ))
-
-const filterRes = restaurants.cuisines.filter(n => n.restaurants.filter(restaurant => restaurant.restaurantName === 'Cod & Caper' ))
-
-
   return (
     <div>
       <p id="demo">Click the button to get your coordinates:</p>

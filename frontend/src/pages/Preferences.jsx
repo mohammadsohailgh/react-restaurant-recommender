@@ -30,11 +30,11 @@ function Preferences() {
     { name: "Gluten", value: '0', position: 6 },
     { name: "Nuts", value: '0', position: 7 },
 
-    { name: "Bitter", value: '1', position: 8, description: "Bitter foods include dark, leafy greens including kale, dandelion greens, and broccoli. Often, leafy vegetables increase in bitterness as they mature. Pure cocoa has a distinct bitterness, which can be used to balance flavours like sweet or spicy in other foods.  As with most bitter flavours, it can be undesirable on its own, but when combined with other flavour elements, it can provide dimension and balance. Citrus peels are often added to spice blends or sweet drinks or desserts for this reason. Orange marmalade is an excellent example of pairing bitter and sweet. Other bitter flavoured fruits and vegetables include grapefruit, bitter melon mustard greens, and olives. Before shying away from bitter ingredients in the future, explore how they can be combined with complimentary tastes to build a complex and enjoyable flavour profile."},
-    { name: "Sweet", value: '1', position: 9, description: "Sweet foods include" },
-    { name: "Sour", value: '1', position: 10, description: "Sour foods include" },
-    { name: "Salty", value: '1', position: 11, description: "Salty foods include" },
-    { name: "Savoury", value: '1', position: 12, description: "Savoury foods include" },
+    { name: "Bitter", value: '1', position: 8, description: "Fenugreek, turmeric, mustard, cocoa, coffee. Bitter flavors provide counterpoints to sweet and savory foods. Bitter is more of a sensation than a flavor description. It is detectable in coffee, mustard, cocoa, olives and citrus peel. We have a funny relationship with bitter. We enjoy it with other things. Coffee with cream and sugar, mustard with meat, cocoa with sugar and fat. By itself, not so much."},
+    { name: "Sweet", value: '1', position: 9, description: "Sugar, honey, maple syrup, jaggery. The degree to which sugars are detectable in food. Sugar is by far our favorite flavor sensation. We eat entirely too much sweet food. Considering that refined sugar only entered the industrial age in the eighteenth century, it quickly became an integral part of cuisines throughout Europe. Prior to that, other means of sweetening foods were more common, including honey, palm sugar and date syrup. Sweet is the primary taste component in desserts, but is also frequently paired with sour and salty for contrasting flavors in savory dishes." },
+    { name: "Sour", value: '1', position: 10, description: "Citrus, vinegar, acid. The degree to which acid is detectable in food. Acidity is used to temper the richness of foods that are high in fat. It’s also very popular as a counterpoint to sweet flavors in numerous cuisines, as well as in sour candy. We have learned to harness and control the souring of food and convert it into foods like cheese, wine, pickles, and the like." },
+    { name: "Salty", value: '1', position: 11, description: "Salt, soy sauce, red miso. The degree to which sodium is detectable in food. It is the oldest known flavoring agent in the world. Salt acts to enhance flavors in food by brightening the other flavors in the dish. We all know the taste of salty. The crunchy snack food industry is built on pushing the envelope of salty food. Lot’s wife was punished with salt because she betrayed her guests by requesting salt from her neighbors, alerting them to the presence of strangers. When used properly, salt is almost a background element, only noticed if it’s missing. Too much salt, and a dish can become unpalatable." },
+    { name: "Savoury", value: '1', position: 12, description: "Meat, eggplant, mushrooms, beans, MSG. savoury uses ingredients whose flavors are commonly described as earthy or meaty. This is the elusive “fifth taste” that registers on a person’s tongue. Technically, it is the detection of glutamates in food. Glutamates are an amino acid, the metabolic product of protein. And, if it hasn’t dawned on you yet, it is the ‘G’ in MSG – Monosodium Glutamate." },
   ]);
 
   // Get taste group
@@ -79,7 +79,6 @@ function Preferences() {
   const onChangeTastePreference = (e, index) => {
     const list = [...userPreference];
     list[index] = { ...list[index], value: e.target.value };
-    // setUserPreferences(list);
     dispatch(setPreference(({ preference: constructAllPreferences(list) })))
 
     successToast()
@@ -112,19 +111,19 @@ function Preferences() {
   }
 
 
-  if (isLoading) {
-    return <Spinner />
-  }
+  // if (isLoading) {
+  //   return <Spinner />
+  // }
 
   return (
-    <div className="container border">
+    <div className="container ">
       {isSuccess ? (
         <>
-          <section className="heading border" style={{ marginBottom: 20 }}>
+          <section className="heading " style={{ marginBottom: 20 }}>
             <h1>Preferences</h1>
           </section>
 
-          <div className="border justify-content-center">
+          <div className=" justify-content-center">
             <p className="fw-bold mb-1" >Select dietary preference</p>
             {userPreference.slice(0, 8).map(({ name, position, value }) => {
               return (
@@ -171,7 +170,7 @@ function Preferences() {
                       <React.Fragment key={position}>
 
                         <div className="row">
-                          <div className="col-sm-5 text-end text-center border ">
+                          <div className="col-sm-5 text-end text-center  ">
                             {name}
 
                             {/* <p className="text-muted mb-0" data-bs-toggle="tooltip" title={description} style={{ fontSize: 13 }}>Click for example</p> */}
