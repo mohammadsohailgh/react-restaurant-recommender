@@ -15,9 +15,9 @@ export const createRecommendation = createAsyncThunk(
     'recommendations/create', 
     async (recommendationData, thunkAPI) => {
     try {
-        console.log("recommendationSlice hit!")
-        console.log(recommendationData)
+        
         const token = thunkAPI.getState().auth.user.token
+        console.log('feeling typessss', recommendationData.feelingType)
         return await recommendationService.createRecommendation(recommendationData, token)
     } catch (error) {
         const message =
@@ -53,9 +53,7 @@ export const getRecommendations = createAsyncThunk('recommendations/getAll', asy
 // get user recommendations
 export const updateRecommendation = createAsyncThunk('recommendations/update', async (reviewData, thunkAPI) => {
     try {
-
         const token = thunkAPI.getState().auth.user.token
-        const userId = thunkAPI.getState().auth.user._id
         return await recommendationService.updateRecommendation(reviewData,  token)
     } catch (error) {
         const message =
@@ -91,7 +89,7 @@ export const recommendationSlice = createSlice({
                 state.isLoading = false
                 state.isSuccess = true  
                 console.log(action.payload)
-                if(action.payload === "204") {
+                if(action.payload === 204) {
                     console.log("CHANGED!!!!!")
                     state.message = "No food dishes were found with your current selected preferences"
                 } else {

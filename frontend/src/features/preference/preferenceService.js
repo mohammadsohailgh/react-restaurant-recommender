@@ -25,8 +25,6 @@ const getPreference = async (token) => {
     return response.data
 }
 
-
-
 const preferenceService = {
     updatePreference,
     getPreference,

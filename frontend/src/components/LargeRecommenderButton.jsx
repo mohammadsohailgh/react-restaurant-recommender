@@ -9,7 +9,7 @@ function LargeRecommenderButton({ target, title, foodGroup, size, colour }) {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth); //get the user from state.auth
   const { isError, message } = useSelector((state) => state.recommendations); //get the user from state.auth
-  const { globalStatePreference } = useSelector((state) => state.globalStatePreference); //get the user from state.auth
+  const { globalStatePreference, feelingType } = useSelector((state) => state.globalStatePreference); //get the user from state.auth
 
   const [userLocation, setUserLocation] = useState({
     userLat: null,
@@ -36,7 +36,9 @@ function LargeRecommenderButton({ target, title, foodGroup, size, colour }) {
   }
 
   function showPosition(position) {
-    dispatch(createRecommendation({ lat: position.coords.latitude, long: position.coords.longitude, userPreference: foodGroup + globalStatePreference }))
+    dispatch(createRecommendation({ lat: position.coords.latitude, long: position.coords.longitude, feelingType: feelingType, userPreference: foodGroup + globalStatePreference }))
+    console.log('largrecbut is:', feelingType)
+    // dispatch(createRecommendation({  feelingType: feelingType }))    
   }
 
   function handleSubmit(e) {

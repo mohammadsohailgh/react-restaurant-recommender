@@ -42,6 +42,14 @@ const recommendationSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    tasteMatchCount: {
+        type: Number,
+        // enum: [0,1,2]// 1=hate, 2=like (willing to try again), 3=love, 
+    },
+    userFeelingType: {
+        type: Number,
+        // enum: [0,1,2]// 1=hate, 2=like (willing to try again), 3=love, 
+    },
     review: {
         type: Number, 
         enum: [0,1,2]// 1=hate, 2=like (willing to try again), 3=love, 

@@ -51,6 +51,7 @@
     "lat": 51.46492476580153,
     "long":  -2.589106291212133,
     "menu": [
+      {"dish_key": "010000101001022", "dish_name": "The Bristolian", "dish_description": "Two free range fried eggs, toast, free range cumberland sausages , baked beans, free range bacon, sesame infused spinach, grilled sunblush tomatoes and crispy fried potatoes."},
       {"dish_key": "010000000011111", "dish_name": "Full English Breakfast", "dish_description": "Full English Breakfast"}
     ]
   },

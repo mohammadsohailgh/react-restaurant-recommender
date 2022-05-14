@@ -6,7 +6,7 @@ import Map from "../components/Map.jsx";
 import LargeRecommenderButton from "../components/LargeRecommenderButton";
 import ModalNewExperience from "../components/ModalNewExperience";
 import { getOrders } from "../features/orders/orderSlice";
-import { getPreference } from "../features/preference/preferenceSlice";
+import { getPreference, setFeelingType } from "../features/preference/preferenceSlice";
 import { getRecommendations } from "../features/recommendation/recommendationSlice";
 import { toast } from 'react-toastify'
 
@@ -17,7 +17,7 @@ function Dashboard() {
   const { user, } = useSelector((state) => state.auth); //get the user from state.auth
   const { orders } = useSelector((state) => state.orders); //get the user from state.auth
   const { recommendations, isError, isSuccess, message } = useSelector((state) => state.recommendations); //get the user from state.auth
-  const [feelingType, setFeelingType] = useState(0)
+  const [localFeelingType, setLocalFeelingType] = useState(0)
   const [success, setSuccess] = useState(false)
 
   useEffect(() => {
@@ -33,18 +33,14 @@ function Dashboard() {
     dispatch(getOrders()); //RERENDERS THE PAGE THREE TIMES, FIGURE OUT WHY
     dispatch(getRecommendations())
     dispatch(getPreference())
-    // dispatch(set())
-
-    // return () => {
-    //   dispatch(reset());
-    // };
-
 
   }, [user, navigate, isError, message, dispatch]);
 
   const recommendationTypeOnChange = (e) => {
-    setFeelingType(e.target.id)
-    console.log(feelingType) 
+    // setLocalFeelingType(e.target.id)
+    console.log('recommendationTypeOnChange hit!', typeof(e.target.id) ) 
+    // if (e.target.id) {
+    dispatch(setFeelingType(e.target.id ))
   }
 
   return (

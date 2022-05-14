@@ -3,6 +3,7 @@ import preferenceService from './preferenceService.js'
 
 const initialState = {
     globalStatePreference: null,
+    feelingType: "0",
     //every redux resource will have isError, isSuccess, isLoading, message
     isError: false,
     isSuccess: false,
@@ -51,10 +52,16 @@ export const preferenceSlice = createSlice({
     name: 'preference',
     initialState,
     reducers: {
-        reset: (state) => initialState
+        reset: (state) => initialState,
+        setFeelingType: (state, action) => {
+            state.feelingType = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder
+            // .addCase(setFeelingType.fulfilled, (state, action) => {
+            //     console.log('feeling type fulfilled')
+            // })
             .addCase(setPreference.pending, (state) => {
                 state.isLoading = true
             })
@@ -85,5 +92,5 @@ export const preferenceSlice = createSlice({
 })
 
 
-export const { reset } = preferenceSlice.actions
+export const { reset, setFeelingType } = preferenceSlice.actions
 export default preferenceSlice.reducer

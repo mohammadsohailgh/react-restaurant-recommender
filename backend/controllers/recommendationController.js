@@ -2,8 +2,8 @@ const asyncHandler = require("express-async-handler");
 
 // const Restaurant = require("../models/restaurantModel");
 const User = require("../models/userModel");
-const Restaurants = require('../models/restaurants.json')
-const Recommendation = require('../models/recommendationModel')
+const Restaurants = require("../models/restaurants.json");
+const Recommendation = require("../models/recommendationModel");
 
 // @desc Get recommendations
 // @route Get /api/recommendations
@@ -14,21 +14,18 @@ const getRecommendations = asyncHandler(async (req, res) => {
   res.status(200).json(recommendations);
 });
 
-// @desc Set recommendations
+// @desc Set recommendation
 // @route POST /api/recommendations
 // @access Private
 const setRecommendation = asyncHandler(async (req, res) => {
-  const { long, lat, userPreference } = req.body
+  const { long, lat, feelingType, userPreference } = req.body;
 
-  if (!lat || !long || !userPreference) {
+  if (!lat || !long || !feelingType || !userPreference) {
     res.status(400);
     throw new Error("Please add all fields");
   }
 
-
-
   //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-  //:::                                                                         :::
   //:::  This routine calculates the distance between two points (given the     :::
   //:::  latitude/longitude of those points). It is being used to calculate     :::
   //:::  the distance between two locations using GeoDataSource (TM) prodducts  :::
@@ -52,7 +49,6 @@ const setRecommendation = asyncHandler(async (req, res) => {
   //:::  Official Web site: https://www.geodatasource.com                       :::
   //:::                                                                         :::
   //:::               GeoDataSource.com (C) All Rights Reserved 2022            :::
-  //:::                                                                         :::
   //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   function distance(lat1, lon1, lat2, lon2, unit) {
     if (lat1 === lat2 && lon1 === lon2) {
@@ -82,75 +78,216 @@ const setRecommendation = asyncHandler(async (req, res) => {
   }
 
   // calculate distance between current user location and all restaurants
-  const distanceCalculated = Restaurants.map(restaurant => ({ ...restaurant, distance: distance(restaurant.lat, restaurant.long, lat, long) }))
+  const distanceCalculated = Restaurants.map((restaurant) => ({
+    ...restaurant,
+    distance: distance(restaurant.lat, restaurant.long, lat, long),
+  }));
   // sort restaurants based on ascending order (closest restaurants first in list)
   distanceCalculated.sort((a, b) => a.distance - b.distance);
   // get 5 nearest restaurants
-  const nearestFiveRestaurants = [...distanceCalculated].slice(0, 5)
+  const nearestFiveRestaurants = [...distanceCalculated].slice(0, 5);
 
   for (const restaurant of nearestFiveRestaurants) {
     const filtered = restaurant.menu.filter(
       // menuItem => menuItem.dish_key === "123456789123456"
       function (menuItem) {
-        var matched = true
+        var matched = true;
+        menuItem.tasteMatchCount = 0;
+        // console.log('menu item looped: ', menuItem.dish_key)
         for (var i = 0; i < menuItem.dish_key.length; i++) {
+          
+          // Firstly filtering the correct dish types for time of day:
           if (i < 2) {
-            // recommend breakfast dishes 
+            // recommend breakfast dishes
             if (userPreference.slice(0, 2) == "00") {
-              if (menuItem.dish_key.slice(0, 2) != "00" && menuItem.dish_key.slice(0, 2) != "01") {
-                matched = false
+              if (
+                menuItem.dish_key.slice(0, 2) != "00" &&
+                menuItem.dish_key.slice(0, 2) != "01"
+              ) {
+                console.log("matched=false, food type breakfast");
+                matched = false;
               }
             }
-            // recommend lunch dishes 
+            // recommend lunch dishes
             else if (userPreference.slice(0, 2) == "10") {
-              if (menuItem.dish_key.slice(0, 2) != "01" && menuItem.dish_key.slice(0, 2) != "11") {
-                matched = false
+              if (
+                menuItem.dish_key.slice(0, 2) != "01" &&
+                menuItem.dish_key.slice(0, 2) != "11"
+              ) {
+                console.log("matched=false, food type lunch");
+                matched = false;
               }
             }
-            // recommend dinner dishes 
+            // recommend dinner dishes
             else if (userPreference.slice(0, 2) == "01") {
-              if (menuItem.dish_key.slice(0, 2) != "11" && menuItem.dish_key.slice(0, 2) != "01") {
-                matched = false
+              if (
+                menuItem.dish_key.slice(0, 2) != "11" &&
+                menuItem.dish_key.slice(0, 2) != "01"
+              ) {
+                console.log("matched=false, food type dinner");
+                matched = false;
               }
             }
-            // skip this iteration to seek 3rd char of loop
-            i++
+            // skip this iteration to seek 3rd char of loop (dish_key)
+            i++;
           }
-          // dietary preference: 
+
+          // Secondly filtering dietary preference:
+          // 
           else if (i < 6) {
             if (userPreference[i] === "1" && menuItem.dish_key[i] !== "1") {
-              matched = false
+              matched = false;
+              console.log("matched=false, dietary preference");
             }
           }
-          // allergens preference: 
+
+          // Thirdly filtering allergens preference:
           else if (i < 10) {
             if (userPreference[i] === "1" && menuItem.dish_key[i] === "1") {
-              matched = false
+              matched = false;
             }
           }
-          // taste group
+
+          // Fourthly filtering taste group
+          // bitter[10], sweet[11], sour[12], salty[13], savoury[14]
           else if (i <= 14) {
-            // bitter[10], sweet[11], sour[12], salty[13], savoury[14]
-            // exclude food items if user rating is 0 and food item has some level inside (medium'1' or high'2')
+            // exclude food items if user preference is 0 and food item has some level inside (medium'1' or high'2')
             if (userPreference[i] === "0" && menuItem.dish_key[i] !== "0") {
-              matched = false
+              matched = false;
+            }
+
+            // feelingType 0=adventurous, 1=safe
+            if (feelingType === "0") {
+              // if user preference loves (2) food taste category and food item has high (2) trace of taste, then increment likliness count of user will like
+              if (userPreference[i] === "1" && menuItem.dish_key[i] === "1") {
+                menuItem.tasteMatchCount++;
+                // matched
+              }
+            } else if (feelingType === "1") {
+              // if user preference willing to try (1) food taste category and food item has medium (1) trace of taste, then increment likliness count of user willingness to try
+              if (userPreference[i] === "2" && menuItem.dish_key[i] === "2") {
+                menuItem.tasteMatchCount++;
+                // matched
+              }
             }
           }
         }
 
         if (matched === true) {
-          return menuItem
+          console.log(
+            "matched=true, dish name:",
+            menuItem.dish_name,
+            "tasteMatchCount: ",
+            menuItem.tasteMatchCount
+          );
+          return menuItem;
         }
       }
-    )
-    restaurant.menu = filtered
+    );
+    restaurant.menu = filtered;
   }
 
-  const recommendations = nearestFiveRestaurants.filter(restaurant => restaurant.menu.length > 0)
-  const singleRecommendation = recommendations[0]
+  // filter and only store restaurants which have menu items matching user preferences
+  const recommendations = nearestFiveRestaurants.filter(
+    (restaurant) => restaurant.menu.length > 0
+  );
+
+  console.log("recommendations length:", recommendations.length);
+
+  if (recommendations.length === 0) {
+    res.status(204);
+    throw new Error("0 recommendations found");
+  }
+
+  var singleRecommendation = { ...recommendations[0] };
+  singleRecommendation.menu = { ...recommendations[0].menu[0] };
+  
+  // var highestFeelingTypeMatch = recommendations[0].menu[0].tasteMatchCount;
+
+  // for (var j = 0; j < recommendations.length; j++) {
+  //   console.log("restaurant name", recommendations[j].restaurant_name);
+  //   for (var i = 0; i < recommendations[j].menu.length; i++) {
+  //     console.log(
+  //       "tastematchcount: ",
+  //       recommendations[j].menu[i].tasteMatchCount,
+  //       "dish name: ",
+  //       recommendations[j].menu[i].dish_name
+  //     );
+  //   }
+  // }
+
+  console.log("single recommendation before rejig:", singleRecommendation.menu.dish_name);
+
+
+
+
+
+  // tournament selection
+  // REDUCE LOOPS, INCREASE EFFICIENCY
+  var sumOfFitness = 0
+
+  for (const restaurant of recommendations) {
+    for (const menuItem of restaurant.menu) {
+      sumOfFitness += menuItem.tasteMatchCount
+    }
+  }
+
+  let picker = Math.floor(Math.random() * sumOfFitness)
+  console.log('sum of fitness:', sumOfFitness)
+  console.log('random picker number:', picker)
+
+  tournamentLoop:
+  for (const restaurant of recommendations) {
+    for (const menuItem of restaurant.menu) {
+      picker = picker - menuItem.tasteMatchCount
+
+      if (picker <= 0) {
+        singleRecommendation = restaurant
+        singleRecommendation.menu = menuItem
+        console.log('recommended item from tournament selection: ', menuItem)
+        
+
+        break tournamentLoop
+      }
+    }
+  }
+
+
+  // var previousProbability = 0.0
+
+  // for (const restaurant of recommendations) {
+  //   for (const menuItem of restaurant.menu) {
+  //     menuItem.probability = previousProbability + (menuItem.tasteMatchCount / sumOfFitness)
+  //     previousProbability = menuItem.probability
+  //     console.log('dish name: ', menuItem.dish_name, 'probability: ', menuItem.probability)
+
+  //   }
+  // }
+
+
+
+
+
+
+  // for (const restaurant of recommendations) {
+  //   for (const menuItem of restaurant.menu) {
+  //     if (menuItem.tasteMatchCount > highestFeelingTypeMatch) {
+  //       highestFeelingTypeMatch = menuItem.tasteMatchCount;
+  //       singleRecommendation = restaurant;
+  //       singleRecommendation.menu = menuItem;
+
+  //       console.log("highestFeelingTypeMatch:", menuItem.tasteMatchCount);
+  //       console.log("singleRecommendation:", restaurant);
+  //       console.log("menu item:", menuItem);
+  //     }
+  //   }
+  // }
+
+  // const singleRecommendation = recommendations[0];
 
   if (!singleRecommendation) {
-    res.status(200).json('204');
+    res.status(204);
+    throw new Error("User not found");
   }
 
   const recommendation = await Recommendation.create({
@@ -161,12 +298,15 @@ const setRecommendation = asyncHandler(async (req, res) => {
     address: singleRecommendation.address,
     lat: singleRecommendation.lat,
     long: singleRecommendation.long,
-    dish_key: singleRecommendation.menu[0].dish_key,
-    dish_name: singleRecommendation.menu[0].dish_name,
-    dish_description: singleRecommendation.menu[0].dish_description
-  }); // getting goal by id
+    dish_key: singleRecommendation.menu.dish_key,
+    dish_name: singleRecommendation.menu.dish_name,
+    dish_description: singleRecommendation.menu.dish_description,
+    tasteMatchCount: singleRecommendation.menu.tasteMatchCount,
+    userFeelingType: feelingType,
+  }); 
 
   // FIGURE OUT A WAY TO EXTRACT ONLY ONE MENU ITEM FROM RECOMMENDED RESTAURANT
+  console.log("response 200 sent recommendation");
   res.status(200).json(recommendation);
 });
 
@@ -194,9 +334,13 @@ const updateRecommendation = asyncHandler(async (req, res) => {
     throw new Error("User not authorised");
   }
 
-  const updatedRecommendation = await Recommendation.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  });
+  const updatedRecommendation = await Recommendation.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+    }
+  );
 
   res.status(200).json(updatedRecommendation);
 });

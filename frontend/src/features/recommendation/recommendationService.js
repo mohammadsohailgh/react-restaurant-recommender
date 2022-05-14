@@ -10,10 +10,11 @@ const createRecommendation = async (recommendationData, token) => {
             Authorization: `Bearer ${token}`
         }
     }
-
+    
+    console.log('feeling type;', recommendationData)
     const response = await axios.post(API_URL, recommendationData, config);
-
-    return response.data
+    console.log('response from createRecommendation', response)
+    return response.status === 204 ? response.status : response.data
   };
 
 // create new recommendation 
