@@ -7,7 +7,7 @@
     "lat": 51.497340347715436,
     "long": -2.5596941886176428,
     "menu": [
-      {"dish_key": "110010011000112", "dish_name": "Large Cod Supper", "dish_description": "Large Cod, small chips, sides, can"}
+      {"dish_key": "1100100110000112", "dish_name": "Large Cod Supper", "dish_description": "Large Cod, small chips, sides, can"}
     ]
   },
   {
@@ -18,7 +18,7 @@
     "lat": 51.4665091896586,
     "long": -2.5647548441295958,
     "menu": [
-      {"dish_key": "110010101000022", "dish_name": "Bolognese Pizza", "dish_description": "Bolognese based pizza (minced meat)."}
+      {"dish_key": "1100101010000022", "dish_name": "Bolognese Pizza", "dish_description": "Bolognese based pizza (minced meat)."}
     ]},
   {
     "restaurant_name": "Pieminister", 
@@ -28,7 +28,7 @@
     "lat": 51.46123336510577,
     "long": -2.590627715256794,
     "menu": [
-      {"dish_key": "000000110100001", "dish_name": "dish name 2", "dish_description": "this is food"}
+      {"dish_key": "0000001101100001", "dish_name": "dish name 2", "dish_description": "this is food"}
     ]
   },
   {
@@ -39,8 +39,8 @@
     "lat": 51.44736760229996, 
     "long":  -2.5982112789577863,
     "menu": [
-      {"dish_key": "110010101000112", "dish_name": "THE BEAST CHICKEN GYROS BOX", "dish_description": "Chicken Gyros marinated in Greek herbs, halloumi fries and olive oil. Served inside a box with our Greek handmade pita."},
-      {"dish_key": "111111001000122", "dish_name": "HALLOUMI SOUVLAKI (V)", "dish_description": "Vegan gyros made with Pea & non-GMO protein marinated in Greek herbs, Vegan Halloumi fries and olive oil. Served inside our Greek handmade pita with lettuce, tomatoes, red onions, parsley, oregano fries and a dip of your choice."}
+      {"dish_key": "1100101010000112", "dish_name": "THE BEAST CHICKEN GYROS BOX", "dish_description": "Chicken Gyros marinated in Greek herbs, halloumi fries and olive oil. Served inside a box with our Greek handmade pita."},
+      {"dish_key": "1111110010000122", "dish_name": "HALLOUMI SOUVLAKI (V)", "dish_description": "Vegan gyros made with Pea & non-GMO protein marinated in Greek herbs, Vegan Halloumi fries and olive oil. Served inside our Greek handmade pita with lettuce, tomatoes, red onions, parsley, oregano fries and a dip of your choice."}
     ]
   },
   {
@@ -51,8 +51,7 @@
     "lat": 51.46492476580153,
     "long":  -2.589106291212133,
     "menu": [
-      {"dish_key": "010000101001022", "dish_name": "The Bristolian", "dish_description": "Two free range fried eggs, toast, free range cumberland sausages , baked beans, free range bacon, sesame infused spinach, grilled sunblush tomatoes and crispy fried potatoes."},
-      {"dish_key": "010000000011111", "dish_name": "Full English Breakfast", "dish_description": "Full English Breakfast"}
+      {"dish_key": "0100001010001022", "dish_name": "The Bristolian", "dish_description": "Two free range fried eggs, toast, free range cumberland sausages , baked beans, free range bacon, sesame infused spinach, grilled sunblush tomatoes and crispy fried potatoes."}
     ]
   },
   {
@@ -63,8 +62,8 @@
     "lat": 51.47238225587841,
     "long": -2.5914482559923986,
     "menu": [
-      {"dish_key": "111110000000112", "dish_name": "THE PEPPERONI ONE (GFO)", "dish_description": "Sourdough Pizza white base with our mozzarella, pepperoni, friarielli (Italian style tender broccoli marinated with garlic and chilli) and homemade parmesan crumb. (Gluten Free Option available)"},
-      {"dish_key": "111110111100111", "dish_name": "THE ONE WITH THE PESTO (GFO)", "dish_description": "Sourdough Pizza Homemade pesto base, with our mozzarella, roasted courgettes, sun-dried tomatoes, homemade parmesan crumb and balsamic glaze. (Gluten Free Option available)"}
+      {"dish_key": "1111100000000112", "dish_name": "THE PEPPERONI ONE (GFO)", "dish_description": "Sourdough Pizza white base with our mozzarella, pepperoni, friarielli (Italian style tender broccoli marinated with garlic and chilli) and homemade parmesan crumb. (Gluten Free Option available)"},
+      {"dish_key": "1111101111000111", "dish_name": "THE ONE WITH THE PESTO (GFO)", "dish_description": "Sourdough Pizza Homemade pesto base, with our mozzarella, roasted courgettes, sun-dried tomatoes, homemade parmesan crumb and balsamic glaze. (Gluten Free Option available)"}
     ]
   },
   {
@@ -75,9 +74,9 @@
     "lat": 51.47414402289657,
     "long": -2.5477639197548356,
     "menu": [
-      {"dish_key": "110010010101022", "dish_name": "MAKHAN CHICKEN TIKKA", "dish_description": "Tikka cooked in a mild mango buttery dish cooked with coconut."},
-      {"dish_key": "110010111000012", "dish_name": "GURKA CHICKEN", "dish_description": "Chicken stuffed with mince meat and garnished with fresh herbs."},
-      {"dish_key": "110010100120211", "dish_name": "ACHARI", "dish_description": "Choice of Chicken or Lamb Tikka cooked in Indian pickle."}
+      {"dish_key": "1100100101001022", "dish_name": "MAKHAN CHICKEN TIKKA", "dish_description": "Tikka cooked in a mild mango buttery dish cooked with coconut."},
+      {"dish_key": "1100101110000012", "dish_name": "GURKA CHICKEN", "dish_description": "Chicken stuffed with mince meat and garnished with fresh herbs."},
+      {"dish_key": "1100101001120211", "dish_name": "ACHARI", "dish_description": "Choice of Chicken or Lamb Tikka cooked in Indian pickle."}
     ]
   }
 ]

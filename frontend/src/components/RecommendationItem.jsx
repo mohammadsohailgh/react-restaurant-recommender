@@ -15,6 +15,9 @@ function OrderItem({ recommendation }) {
         dispatch(updateRecommendation({ id: recommendation._id, review: e.target.value }))
     }
 
+    const spiceColour = recommendation.dish_key[10] === "0" ? "green" : recommendation.dish_key[10] === "1" ? "orange" : "red"
+    // console.log('yeet"', recommendation.dish_key[9], recommendation.dish_name)
+
 
     return (
         <>
@@ -22,9 +25,9 @@ function OrderItem({ recommendation }) {
                 <div className="row g-0 align-items-center">
                     <div className="col-md-4  ">
                         <RadarChartTaste
-                            taste_group={recommendation.dish_key.slice(10)}
+                            taste_group={recommendation.dish_key.slice(11)}
                             size={130}
-                            colour='green'
+                            colour={spiceColour}
                         />
                         {recommendation.dish_key.slice(10)}
                     </div>

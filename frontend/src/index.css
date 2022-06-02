@@ -337,3 +337,32 @@ img {
 .layer2{
   background: rgba(255, 0, 0, 0.4);
 }
+
+
+
+
+
+/* custom slider */
+
+.custom-range::-webkit-slider-thumb {
+  background: red;
+}
+
+.custom-range::-moz-range-thumb {
+  background: red;
+}
+
+.custom-range::-ms-thumb {
+  background: red;
+}
+
+
+-webkit-slider-thumb:active {
+  background-color: red;
+}
+-webkit-slider-thumb,
+.custom-range:focus::-webkit-slider-thumb, 
+.custom-range:focus::-moz-range-thumb,
+.custom-range:focus::-ms-thumb {
+  box-shadow: red;
+}

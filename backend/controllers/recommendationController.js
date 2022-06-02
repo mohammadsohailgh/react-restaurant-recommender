@@ -77,17 +77,39 @@ const setRecommendation = asyncHandler(async (req, res) => {
     }
   }
 
+  // // calculate distance between current user location and all restaurants
+  // const distanceCalculated = Restaurants.map((restaurant) => ({
+  //   ...restaurant,
+  //   distance: distance(restaurant.lat, restaurant.long, lat, long),
+  // }));
+  // // sort restaurants based on ascending order (closest restaurants first in list)
+  // distanceCalculated.sort((a, b) => a.distance - b.distance);
+  // // get 5 nearest restaurants
+  // const localRestaurants = [...distanceCalculated].slice(0, 5);
+
+  console.log('lat', lat, ' long: ', long)
+
   // calculate distance between current user location and all restaurants
   const distanceCalculated = Restaurants.map((restaurant) => ({
     ...restaurant,
     distance: distance(restaurant.lat, restaurant.long, lat, long),
   }));
-  // sort restaurants based on ascending order (closest restaurants first in list)
-  distanceCalculated.sort((a, b) => a.distance - b.distance);
-  // get 5 nearest restaurants
-  const nearestFiveRestaurants = [...distanceCalculated].slice(0, 5);
 
-  for (const restaurant of nearestFiveRestaurants) {
+  // filter restaurants within 3 mile radius
+  const localRestaurants = distanceCalculated.filter(
+    restaurant => restaurant.distance <= 3)
+  
+  // for (var r of localRestaurants) {
+  //   console.log(r.restaurant_name, 'menu length:', r.menu.length);
+  // }
+
+  // for (var r of localRestaurants) {
+  //   console.log('\n restaurant menu within distance, ', r.restaurant_name, r.menu)
+  // }
+
+  for (const restaurant of localRestaurants) {
+    // console.log(restaurant )
+    if (restaurant.menu.length > 0) {
     const filtered = restaurant.menu.filter(
       // menuItem => menuItem.dish_key === "123456789123456"
       function (menuItem) {
@@ -101,10 +123,10 @@ const setRecommendation = asyncHandler(async (req, res) => {
             // recommend breakfast dishes
             if (userPreference.slice(0, 2) == "00") {
               if (
-                menuItem.dish_key.slice(0, 2) != "00" &&
-                menuItem.dish_key.slice(0, 2) != "01"
+                menuItem.dish_key.slice(0, 2) != "00" 
+                // && menuItem.dish_key.slice(0, 2) != "01"
               ) {
-                console.log("matched=false, food type breakfast");
+                // console.log("matched=false, food type breakfast");
                 matched = false;
               }
             }
@@ -114,7 +136,7 @@ const setRecommendation = asyncHandler(async (req, res) => {
                 menuItem.dish_key.slice(0, 2) != "01" &&
                 menuItem.dish_key.slice(0, 2) != "11"
               ) {
-                console.log("matched=false, food type lunch");
+                // console.log("matched=false, food type lunch");
                 matched = false;
               }
             }
@@ -124,7 +146,7 @@ const setRecommendation = asyncHandler(async (req, res) => {
                 menuItem.dish_key.slice(0, 2) != "11" &&
                 menuItem.dish_key.slice(0, 2) != "01"
               ) {
-                console.log("matched=false, food type dinner");
+                // console.log("matched=false, food type dinner");
                 matched = false;
               }
             }
@@ -133,11 +155,10 @@ const setRecommendation = asyncHandler(async (req, res) => {
           }
 
           // Secondly filtering dietary preference:
-          // 
           else if (i < 6) {
             if (userPreference[i] === "1" && menuItem.dish_key[i] !== "1") {
               matched = false;
-              console.log("matched=false, dietary preference");
+              // console.log("matched=false, dietary preference");
             }
           }
 
@@ -145,15 +166,17 @@ const setRecommendation = asyncHandler(async (req, res) => {
           else if (i < 10) {
             if (userPreference[i] === "1" && menuItem.dish_key[i] === "1") {
               matched = false;
+              // console.log('matched false: 4' )
             }
           }
 
           // Fourthly filtering taste group
-          // bitter[10], sweet[11], sour[12], salty[13], savoury[14]
-          else if (i <= 14) {
+          // spice[10] bitter[11], sweet[12], sour[13], salty[14], savoury[15]
+          else if (i <= 15) {
             // exclude food items if user preference is 0 and food item has some level inside (medium'1' or high'2')
             if (userPreference[i] === "0" && menuItem.dish_key[i] !== "0") {
               matched = false;
+              // console.log('matched false: 5' )
             }
 
             // feelingType 0=adventurous, 1=safe
@@ -174,56 +197,29 @@ const setRecommendation = asyncHandler(async (req, res) => {
         }
 
         if (matched === true) {
-          console.log(
-            "matched=true, dish name:",
-            menuItem.dish_name,
-            "tasteMatchCount: ",
-            menuItem.tasteMatchCount
-          );
+          console.log("matched=true, dish name:", menuItem.dish_name, "tasteMatchCount: ", menuItem.tasteMatchCount);
           return menuItem;
         }
       }
     );
     restaurant.menu = filtered;
+    }
   }
 
   // filter and only store restaurants which have menu items matching user preferences
-  const recommendations = nearestFiveRestaurants.filter(
+  const recommendations = localRestaurants.filter(
     (restaurant) => restaurant.menu.length > 0
   );
 
   console.log("recommendations length:", recommendations.length);
-
   if (recommendations.length === 0) {
     res.status(204);
     throw new Error("0 recommendations found");
   }
 
-  var singleRecommendation = { ...recommendations[0] };
-  singleRecommendation.menu = { ...recommendations[0].menu[0] };
-  
-  // var highestFeelingTypeMatch = recommendations[0].menu[0].tasteMatchCount;
-
-  // for (var j = 0; j < recommendations.length; j++) {
-  //   console.log("restaurant name", recommendations[j].restaurant_name);
-  //   for (var i = 0; i < recommendations[j].menu.length; i++) {
-  //     console.log(
-  //       "tastematchcount: ",
-  //       recommendations[j].menu[i].tasteMatchCount,
-  //       "dish name: ",
-  //       recommendations[j].menu[i].dish_name
-  //     );
-  //   }
-  // }
-
-  console.log("single recommendation before rejig:", singleRecommendation.menu.dish_name);
-
-
-
-
-
   // tournament selection
   // REDUCE LOOPS, INCREASE EFFICIENCY
+  let singleRecommendation = recommendations[0].menu[0]
   var sumOfFitness = 0
 
   for (const restaurant of recommendations) {
@@ -245,50 +241,16 @@ const setRecommendation = asyncHandler(async (req, res) => {
         singleRecommendation = restaurant
         singleRecommendation.menu = menuItem
         console.log('recommended item from tournament selection: ', menuItem)
-        
 
         break tournamentLoop
       }
     }
   }
 
-
-  // var previousProbability = 0.0
-
-  // for (const restaurant of recommendations) {
-  //   for (const menuItem of restaurant.menu) {
-  //     menuItem.probability = previousProbability + (menuItem.tasteMatchCount / sumOfFitness)
-  //     previousProbability = menuItem.probability
-  //     console.log('dish name: ', menuItem.dish_name, 'probability: ', menuItem.probability)
-
-  //   }
+  // if (!singleRecommendation) {
+  //   res.status(204);
+  //   throw new Error("User not found");
   // }
-
-
-
-
-
-
-  // for (const restaurant of recommendations) {
-  //   for (const menuItem of restaurant.menu) {
-  //     if (menuItem.tasteMatchCount > highestFeelingTypeMatch) {
-  //       highestFeelingTypeMatch = menuItem.tasteMatchCount;
-  //       singleRecommendation = restaurant;
-  //       singleRecommendation.menu = menuItem;
-
-  //       console.log("highestFeelingTypeMatch:", menuItem.tasteMatchCount);
-  //       console.log("singleRecommendation:", restaurant);
-  //       console.log("menu item:", menuItem);
-  //     }
-  //   }
-  // }
-
-  // const singleRecommendation = recommendations[0];
-
-  if (!singleRecommendation) {
-    res.status(204);
-    throw new Error("User not found");
-  }
 
   const recommendation = await Recommendation.create({
     user: req.user.id,
