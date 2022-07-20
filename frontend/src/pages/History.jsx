@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux"; // used to grab user from state to se
 import { getRecommendations } from "../features/recommendation/recommendationSlice";
 import { useEffect, useState } from "react"; //
 
-function Reviews() {
+function History() {
   const dispatch = useDispatch();
 
   const { recommendations, isSuccess } = useSelector((state) => state.recommendations); //get the user from state.auth
@@ -13,7 +13,7 @@ function Reviews() {
 
   useEffect(() => {
     dispatch(getRecommendations())
-   
+
   }, [dispatch])
 
   useEffect(() => {
@@ -26,11 +26,11 @@ function Reviews() {
     if (e.target.id === "all") {
       setFilteredRecommendations(recommendations)
     } else if (e.target.id === "reviewed") {
-      setFilteredRecommendations(recommendations.filter(i => i.hasOwnProperty('review') ))
+      setFilteredRecommendations(recommendations.filter(i => i.hasOwnProperty('review')))
     } else if (e.target.id === "unreviewed") {
-      setFilteredRecommendations(recommendations.filter(i => !i.hasOwnProperty('review') ))
+      setFilteredRecommendations(recommendations.filter(i => !i.hasOwnProperty('review')))
     }
-  
+
     console.log('filteed items', filteredRecommendations)
   }
 
@@ -39,7 +39,7 @@ function Reviews() {
     <div>
 
       <section className="heading" style={{ marginBottom: 20 }}>
-        <h1>Reviews</h1>
+        <h1>History</h1>
       </section>
 
       <p> Filter</p>
@@ -47,13 +47,13 @@ function Reviews() {
         <input type="radio" className="btn-check" name="btnradio" id="all" autoComplete="off" defaultChecked />
         <label className="btn btn-outline-primary" htmlFor="all">All recommendations ({recommendations.length}) </label>
 
-        <input type="radio" className="btn-check" name="btnradio" id="reviewed" autoComplete="off"/>
+        <input type="radio" className="btn-check" name="btnradio" id="reviewed" autoComplete="off" />
         <label className="btn btn-outline-primary" htmlFor="reviewed">Reviewed ({recommendations.filter(e => e.hasOwnProperty('review')).length}) </label>
 
-        <input type="radio" className="btn-check" name="btnradio" id="unreviewed" autoComplete="off"/>
+        <input type="radio" className="btn-check" name="btnradio" id="unreviewed" autoComplete="off" />
         <label className="btn btn-outline-primary" htmlFor="unreviewed">Unreviewed ({recommendations.filter(e => !e.hasOwnProperty('review')).length}) </label>
       </div>
-      
+
 
       {recommendations.length > 0 ? (
         <div className="justify-content-center row">
@@ -69,4 +69,4 @@ function Reviews() {
   )
 }
 
-export default Reviews
+export default History

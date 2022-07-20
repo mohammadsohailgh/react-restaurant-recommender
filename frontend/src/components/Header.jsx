@@ -30,17 +30,17 @@ function Header() {
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                   <li className="nav-item">
                     <div className="nav-link active" aria-current="page" >
-                      <Link to='/reviews'>Reviews</Link>
+                      <Link to='/history'>History</Link>
                     </div>
                   </li>
                   <li className="nav-item">
                     <div className="nav-link" >
-                    <Link to='/roulette'>Roulette</Link>
+                      <Link to='/roulette'>Roulette</Link>
                     </div>
                   </li>
                   <li className="nav-item">
                     <div className="nav-link" >
-                    <Link to='/preferences'>Preferences</Link>
+                      <Link to='/preferences'>Preferences</Link>
                     </div>
                   </li>
                 </ul>
@@ -57,13 +57,13 @@ function Header() {
               </>
             ) : (
               <>
-                <ul className="navbar-nav me-auto mb-2 mb-lg-0" > 
-                <li className="nav-item">
+                <ul className="navbar-nav me-auto mb-2 mb-lg-0" >
+                  <li className="nav-item">
                     <div className="nav-link active" aria-current="page" >
-                      <Link to='/reviews'>  </Link>
+                      <Link to='/history'>  </Link>
                     </div>
                   </li>
-                </ul> 
+                </ul>
                 <span >
                   <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                     <li className="nav-item nav-link">

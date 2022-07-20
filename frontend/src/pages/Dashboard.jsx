@@ -2,10 +2,10 @@ import { useEffect, useState } from "react"; //
 import { useNavigate } from "react-router-dom"; //used to redierct user
 import { useSelector, useDispatch } from "react-redux"; // used to grab user from state to see if theyre logged in
 import RecommendationItem from "../components/RecommendationItem";
-import Map from "../components/Map.jsx";
 import LargeRecommenderButton from "../components/LargeRecommenderButton";
 import ModalNewExperience from "../components/ModalNewExperience";
-import { getOrders } from "../features/orders/orderSlice";
+import ToastGetLocation from "../components/ToastGetLocation";
+
 import { getPreference, setFeelingType } from "../features/preference/preferenceSlice";
 import { getRecommendations } from "../features/recommendation/recommendationSlice";
 import { toast } from 'react-toastify'
@@ -15,12 +15,15 @@ function Dashboard() {
   const dispatch = useDispatch();
 
   const { user, } = useSelector((state) => state.auth); //get the user from state.auth
-  const { orders } = useSelector((state) => state.orders); //get the user from state.auth
   const { recommendations, isError, isSuccess, message } = useSelector((state) => state.recommendations); //get the user from state.auth
-  const [localFeelingType, setLocalFeelingType] = useState(0)
-  const [success, setSuccess] = useState(false)
+
+  const locationToast = () =>
+    toast.warn("Please enable location for full application features", 
+    {autoClose: false })
+  
 
   useEffect(() => {
+    
     if (isError) {
       toast.error(message)
       console.log(message)
@@ -30,7 +33,6 @@ function Dashboard() {
       navigate("/login");
     }
 
-    dispatch(getOrders()); //RERENDERS THE PAGE THREE TIMES, FIGURE OUT WHY
     dispatch(getRecommendations())
     dispatch(getPreference())
 
@@ -46,6 +48,8 @@ function Dashboard() {
   return (
     <>
 
+      <ToastGetLocation/>
+      
       <section className="heading">
         <h1>Welcome {user && user.name}</h1>{" "}
         {/* if user exists then display user.name */}
@@ -63,14 +67,10 @@ function Dashboard() {
             <label className="btn btn-outline-primary" htmlFor="1">Safe</label>
 
             <br/>
-
           </div>
 
 
         <div className="row justify-content-md-center mt-3">
-          {/* <LargeRecommenderButton target="#restaurantRecommender" title="Choose a specific restaurant" size="col-sm-6" colour="#A60027" />
-          <LargeRecommenderButton target="#staticBackdrop" title="Recommend a new experience" size="col-sm-6" colour="#FF033E" /> */}
-
 
           <p> Choose meal time </p>
 
@@ -87,7 +87,6 @@ function Dashboard() {
 
       <ModalNewExperience />
 
-      {/* <ModalChooseRestaurant /> */}
 
       <div className="container ">
         <section className="heading mt-4">
@@ -96,7 +95,7 @@ function Dashboard() {
 
         {recommendations.length > 0 ? (
           <div className="justify-content-center row">
-            {recommendations.slice(0,3).map((recommendation) => (
+            { recommendations.slice(0,3).map((recommendation) => (
               <RecommendationItem key={recommendation._id} recommendation={recommendation} />
             ))}
           </div>
@@ -105,20 +104,6 @@ function Dashboard() {
         )}
 
       </div>
-
-      <section className="content">
-
-        {/* <OrderForm />
-        {orders.length > 0 ? (
-          <div className="orders">
-            {orders.map((order) => (
-              <OrderItem key={order._id} order={order} />
-            ))}
-          </div>
-        ) : (
-          <h3>You have not set any orders</h3>
-        )} */}
-      </section>
     </>
   );
 

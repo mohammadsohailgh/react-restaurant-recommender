@@ -34,7 +34,6 @@ export const createRecommendation = createAsyncThunk(
 // get user recommendations
 export const getRecommendations = createAsyncThunk('recommendations/getAll', async (_, thunkAPI) => {
     try {
-        console.log('getRecommendations ordersSlice hit!: ')
 
         const token = thunkAPI.getState().auth.user.token
         return await recommendationService.getRecommendations(token)
@@ -67,7 +66,6 @@ export const updateRecommendation = createAsyncThunk('recommendations/update', a
 })
 
 
-
 export const recommendationSlice = createSlice({
     name: 'recommendation',
     initialState,
@@ -94,7 +92,7 @@ export const recommendationSlice = createSlice({
                     state.message = "No food dishes were found with your current selected preferences"
                 } else {
                     state.message = ''
-                    state.recommendations.push(action.payload)
+                    state.recommendations.unshift(action.payload)
                 }
             })
             .addCase(createRecommendation.rejected, (state, action) => {
@@ -123,16 +121,7 @@ export const recommendationSlice = createSlice({
                 state.isLoading = false
                 state.isSuccess = true
                 console.log('update recommendations action.payload: ', action.payload)
-                // state.recommendations.push(action.payload)
-                // state.recommendations.forEach(e => {
-                //     // console.log(e._id)
-                //     if (e._id === action.payload._id) {
-                //         e = action.payload
-                //     }
-                // });
-
-                // state.recommendations.find(recommendation => recommendation._id === action.payload._id).mark = "marked!"
-                
+             
                 const index = state.recommendations.findIndex(x => x._id === action.payload._id)
                 state.recommendations[index] = action.payload
 

@@ -17,7 +17,7 @@ const createRecommendation = async (recommendationData, token) => {
     return response.status === 204 ? response.status : response.data
   };
 
-// create new recommendation 
+// update recommendation 
 const updateRecommendation = async (recommendationData, token) => {
     const config = {
         headers: {

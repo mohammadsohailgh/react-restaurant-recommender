@@ -17,6 +17,12 @@ const userSchema = mongoose.Schema({
     preference: {
         type: String,
     },
+    liked_tags: {
+        type: Array,
+    },
+    disliked_tags: {
+        type: Array,
+    },
     role: { 
         type: String, //false = restaurant user, true = customer
         required: [true, 'Please add a role'],

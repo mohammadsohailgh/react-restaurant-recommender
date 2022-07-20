@@ -97,8 +97,10 @@ const setRecommendation = asyncHandler(async (req, res) => {
 
   // filter restaurants within 3 mile radius
   const localRestaurants = distanceCalculated.filter(
-    restaurant => restaurant.distance <= 3)
+    restaurant => restaurant.distance <= 15)
   
+  console.log('restaurant length within 3 miles ', localRestaurants.length)
+
   // for (var r of localRestaurants) {
   //   console.log(r.restaurant_name, 'menu length:', r.menu.length);
   // }
@@ -247,11 +249,6 @@ const setRecommendation = asyncHandler(async (req, res) => {
     }
   }
 
-  // if (!singleRecommendation) {
-  //   res.status(204);
-  //   throw new Error("User not found");
-  // }
-
   const recommendation = await Recommendation.create({
     user: req.user.id,
     restaurant_name: singleRecommendation.restaurant_name,
@@ -260,11 +257,13 @@ const setRecommendation = asyncHandler(async (req, res) => {
     address: singleRecommendation.address,
     lat: singleRecommendation.lat,
     long: singleRecommendation.long,
+    dish_uid: singleRecommendation.menu.dish_uid,
     dish_key: singleRecommendation.menu.dish_key,
     dish_name: singleRecommendation.menu.dish_name,
     dish_description: singleRecommendation.menu.dish_description,
     tasteMatchCount: singleRecommendation.menu.tasteMatchCount,
     userFeelingType: feelingType,
+    distance: singleRecommendation.distance
   }); 
 
   // FIGURE OUT A WAY TO EXTRACT ONLY ONE MENU ITEM FROM RECOMMENDED RESTAURANT

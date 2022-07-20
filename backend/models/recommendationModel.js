@@ -30,6 +30,10 @@ const recommendationSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
+    dish_uid: {
+        type: Number,
+        required: true
+    },
     dish_key: {
         type: String,
         required: true,
@@ -53,6 +57,9 @@ const recommendationSchema = mongoose.Schema({
     review: {
         type: Number, 
         enum: [0,1,2]// 1=hate, 2=like (willing to try again), 3=love, 
+    },
+    distance: {
+        type: Number
     }
 }, {
     timestamps: true,

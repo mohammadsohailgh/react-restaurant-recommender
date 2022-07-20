@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux"; // used to grab user fro
 import { createRecommendation, reset } from "../features/recommendation/recommendationSlice.js";
 import { toast } from 'react-toastify'
 
-
 function LargeRecommenderButton({ target, title, foodGroup, size, colour }) {
 
   const dispatch = useDispatch()
@@ -37,8 +36,6 @@ function LargeRecommenderButton({ target, title, foodGroup, size, colour }) {
 
   function showPosition(position) {
     dispatch(createRecommendation({ lat: position.coords.latitude, long: position.coords.longitude, feelingType: feelingType, userPreference: foodGroup + globalStatePreference }))
-    console.log('largrecbut is:', feelingType)
-    // dispatch(createRecommendation({  feelingType: feelingType }))    
   }
 
   function handleSubmit(e) {

@@ -1,17 +1,10 @@
-import GetLocation from './GetLocation'
 import LargeRecommenderButton from './LargeRecommenderButton'
 import { useState, useEffect } from 'react'
 
 function ChooseRestaurantModal() {
-  const [recommendationSelected, setRecommendationSelected] = useState(false)
-
-  useEffect( () => {
-    console.log(recommendationSelected);
-  }, [recommendationSelected]);
 
   return (
     <div>
-        
         {/* /* <!-- Modal --> */} 
       <div
         className="modal fade centered"
@@ -25,9 +18,9 @@ function ChooseRestaurantModal() {
         <div className="modal-dialog modal-dialog-centered modal-xl">
           <div className="modal-content">
             <div className="modal-header text-center">
-              {/* <h5 className="modal-title w-100" id="staticBackdropLabel"> */}
-                {/* Choose a specific restaurant */}
-              {/* </h5> */}
+              <h5 className="modal-title w-100" id="staticBackdropLabel">
+                New recommendation
+              </h5>
               <button
                 type="button"
                 className="btn-close"
@@ -74,18 +67,6 @@ function ChooseRestaurantModal() {
                     />
 
                     {/* {{recommendationSelected}} */}
-                  
-                    <p > hi</p>
-                    <p > hi</p>
-                    <p > hi</p>
-                    <p > hi</p>
-                    <p > hi</p>
-                    <p > hi</p>
-                    <p > hi</p>
-                    <p > hi</p>
-                    <p > hi</p>
-                    <p a="ttext"> hi</p>
-
 
                   </div>
                 </div>

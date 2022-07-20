@@ -1,27 +1,26 @@
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux"; // used to grab user from state to see if theyre logged in
+import { useSelector } from "react-redux"; // used to grab user from state to see if theyre logged in
+import Map from "../components/Map.jsx";
 
 function ModelExperienceModal() {
 
   const { recommendations, isLoading, isSuccess, message } = useSelector((state) => state.recommendations); //get the user from state.auth
+
+  // Used for loading text when getting recommendation. forced load
   const [showLoader, setShowLoader] = useState(true)
   const [showLoaderText, setShowLoaderText] = useState('')
 
-  const recommendation = recommendations[recommendations.length - 1];
-  
-  useEffect(() => {
+  const recommendation = recommendations[0];
 
-    if (isLoading)  {
+  // Everytime isLoading variable is refreshed, excute this useEffect function. Purpose: shows loading messages to user, delays recommendation on screen
+  useEffect(() => {
+    if (isLoading) {
       setShowLoader(true)
       setShowLoaderText('Getting your location')
-  
+
       setTimeout(function () {
         setShowLoaderText('Finding local restaurants')
       }, 2000);
-
-      setTimeout(function () {
-        setShowLoaderText('Removing allergens')
-      }, 4000);
 
       setTimeout(function () {
         setShowLoaderText('Filtering preferences')
@@ -30,10 +29,8 @@ function ModelExperienceModal() {
       setTimeout(function () {
         setShowLoader(false)
       }, 8000);
-
-    } 
-  
-  }, [isLoading] )
+    }
+  }, [isLoading])
 
   return (
     <div>
@@ -47,11 +44,11 @@ function ModelExperienceModal() {
         aria-labelledby="staticBackdropLabel"
         aria-hidden="true"
       >
-        <div className="modal-dialog modal-dialog-centered modal-xl">
+        <div className="modal-dialog modal-dialog-centered modal-md">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="staticBackdropLabel">
-                New experience
+                New recommendation
               </h5>
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -59,30 +56,40 @@ function ModelExperienceModal() {
 
               {showLoader ? (
                 <>
-                 <div className="spinner-border" style = {{ width: 80 , height: 80 }} role="status">
-                </div>
+                  <div className="spinner-border" style={{ width: 80, height: 80 }} role="status">
+                  </div>
 
-                <div className="row justify-content-center">
-                  <h5 className="mt-4"> {showLoaderText} </h5>
-                </div>
+                  <div className="row justify-content-center">
+                    <h5 className="mt-4"> {showLoaderText} </h5>
+                  </div>
                 </>
               ) : (null)}
 
-              { !showLoader && isSuccess && message === '' && recommendations.length > 0 ?
+              {!showLoader && isSuccess && message === '' && recommendations.length > 0 ?
                 (
                   <>
-                    <div><span className="fw-bold">Restaurant: </span>{recommendation.restaurant_name}</div>
-                    <div><span className="fw-bold">Cuisine: </span>{recommendation.cuisine}</div>
-                    <div><span className="fw-bold">Price range: </span>{recommendation.price_range}</div>
-                    <div><span className="fw-bold">Recommended dish: </span>{recommendation.dish_name}</div>
-                    <div><span className="fw-bold">Dish description: </span>{recommendation.dish_description}</div>
-                    <div><span className="fw-bold">Address: </span>{recommendation.address}</div>
+                    <Map mapHeight={150} lat={recommendation.lat} long={recommendation.long} popupText={recommendation.restaurant_name} />
+
+                    <div className="list-group">
+                      <div className="list-group-item list-group-item-action" aria-current="true">
+                        <div className="d-flex  w-100 justify-content-between">
+                          <h5 className=" text-start mb-1"> {recommendation.restaurant_name} <small className="text-muted"> {recommendation.cuisine} </small> </h5>
+                          <small className="text-end">{Number((recommendation.distance).toFixed(1))} miles away</small>
+                        </div>
+
+                        <div className="d-flex w-100 justify-content-between">
+                          <p className="text-start mb-1">  {recommendation.dish_name}  <span className="badge bg-primary rounded-pill">Recommended dish</span>  </p>
+                        </div>
+
+                        <p className="d-flex text-start mb-1">Description: {recommendation.dish_description} </p>
+                        <p className="text-start mb-2"> Price range: {recommendation.price_range} </p>
+                        <small className="d-flex">Address: {recommendation.address}</small>
+                      </div>
+                    </div>
                   </>
+                ) : (
+                  !showLoader ? (message) : (null)
                 )
-                :
-                (
-                   !showLoader ? ( message ) : (null)
-                  )
               }
 
             </div>
@@ -94,20 +101,13 @@ function ModelExperienceModal() {
               >
                 Close
               </button>
-              
+
             </div>
           </div>
         </div>
       </div>
-
-
-
-
-
     </div>
   )
-
-            
 }
 
 export default ModelExperienceModal

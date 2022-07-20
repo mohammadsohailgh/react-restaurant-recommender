@@ -11,8 +11,10 @@ import {
 } from "../features/preference/preferenceSlice.js";
 import { toast } from "react-toastify";
 import RadarChartTaste from "../components/RadarChartTaste";
+import Card from "../components/Card.jsx";
 
 import "react-svg-radar-chart/build/css/index.css";
+const images = require('../images/_images_map.json');
 
 function Preferences() {
   const { globalStatePreference, isSuccess, isError, message } = useSelector(
@@ -122,7 +124,6 @@ function Preferences() {
   const navigateRecommender = (e) => {
     navigate("/");
   };
-
 
   useEffect(() => {
     // const preamble = dietaryPreference.map(i => i === true ? 1 : 0)
@@ -266,23 +267,35 @@ function Preferences() {
                 </div>
               </div>
             </div>
+
+            {/* <div className="row justify-content-center">
+
+              {console.log(images)}
+              {images.map(({ location }) => {
+                return (
+                  <React.Fragment key={location}>
+                    <div className="col-md-4 col-sm-6 col-xs-6 mb-5">
+                    <Card image={location}  />
+                    </div>
+                  </React.Fragment>)
+              })}
+            </div> */}
           </div>
 
-          {/* <div class="position-fixed position-absolute bottom-0 end-0 ">
-            <label className="btn btn-danger" htmlFor="0">
-              Submit preferences
-            </label>
-          </div> */}
 
-          <footer class="footer mt-auto py-3 bg-light  fixed-bottom ">
-            <div class="container">
-              {/* <button type="button" class="btn btn-success">Submit preferences</button> */}
-              {/* <Link to="/roulette"> */}
-       
-                <button type="button" class="btn btn-success" onClick={navigateRecommender} >
+
+
+          <footer className="footer mt-auto py-3 bg-light  fixed-bottom ">
+            <div className="container">
+              <div className="d-flex justify-content-end">
+                <button
+                  type="button"
+                  className="btn btn-success "
+                  onClick={navigateRecommender}
+                >
                   Submit preferences
                 </button>
-              {/* </Link> */}
+              </div>
             </div>
           </footer>
         </>
