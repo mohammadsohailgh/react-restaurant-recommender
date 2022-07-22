@@ -77,16 +77,6 @@ const setRecommendation = asyncHandler(async (req, res) => {
     }
   }
 
-  // // calculate distance between current user location and all restaurants
-  // const distanceCalculated = Restaurants.map((restaurant) => ({
-  //   ...restaurant,
-  //   distance: distance(restaurant.lat, restaurant.long, lat, long),
-  // }));
-  // // sort restaurants based on ascending order (closest restaurants first in list)
-  // distanceCalculated.sort((a, b) => a.distance - b.distance);
-  // // get 5 nearest restaurants
-  // const localRestaurants = [...distanceCalculated].slice(0, 5);
-
   console.log('lat', lat, ' long: ', long)
 
   // calculate distance between current user location and all restaurants
@@ -113,11 +103,9 @@ const setRecommendation = asyncHandler(async (req, res) => {
     // console.log(restaurant )
     if (restaurant.menu.length > 0) {
     const filtered = restaurant.menu.filter(
-      // menuItem => menuItem.dish_key === "123456789123456"
       function (menuItem) {
         var matched = true;
         menuItem.tasteMatchCount = 0;
-        // console.log('menu item looped: ', menuItem.dish_key)
         for (var i = 0; i < menuItem.dish_key.length; i++) {
           
           // Firstly filtering the correct dish types for time of day:
@@ -125,30 +113,30 @@ const setRecommendation = asyncHandler(async (req, res) => {
             // recommend breakfast dishes
             if (userPreference.slice(0, 2) == "00") {
               if (
-                menuItem.dish_key.slice(0, 2) != "00" 
+                menuItem.dish_key.slice(0, 2) != "00" || menuItem.dish_key.slice(0, 2) != "10"
                 // && menuItem.dish_key.slice(0, 2) != "01"
               ) {
-                // console.log("matched=false, food type breakfast");
+                console.log("matched=false, food type breakfast");
                 matched = false;
               }
             }
             // recommend lunch dishes
             else if (userPreference.slice(0, 2) == "10") {
               if (
-                menuItem.dish_key.slice(0, 2) != "01" &&
+                menuItem.dish_key.slice(0, 2) != "10" ||
                 menuItem.dish_key.slice(0, 2) != "11"
               ) {
-                // console.log("matched=false, food type lunch");
+                console.log("matched=false, food type lunch");
                 matched = false;
               }
             }
             // recommend dinner dishes
             else if (userPreference.slice(0, 2) == "01") {
               if (
-                menuItem.dish_key.slice(0, 2) != "11" &&
+                menuItem.dish_key.slice(0, 2) != "11" ||
                 menuItem.dish_key.slice(0, 2) != "01"
               ) {
-                // console.log("matched=false, food type dinner");
+                console.log("matched=false, food type dinner");
                 matched = false;
               }
             }
@@ -160,7 +148,7 @@ const setRecommendation = asyncHandler(async (req, res) => {
           else if (i < 6) {
             if (userPreference[i] === "1" && menuItem.dish_key[i] !== "1") {
               matched = false;
-              // console.log("matched=false, dietary preference");
+              console.log("matched=false, dietary preference");
             }
           }
 
@@ -168,7 +156,7 @@ const setRecommendation = asyncHandler(async (req, res) => {
           else if (i < 10) {
             if (userPreference[i] === "1" && menuItem.dish_key[i] === "1") {
               matched = false;
-              // console.log('matched false: 4' )
+              console.log('matched false: 4' )
             }
           }
 
@@ -177,8 +165,8 @@ const setRecommendation = asyncHandler(async (req, res) => {
           else if (i <= 15) {
             // exclude food items if user preference is 0 and food item has some level inside (medium'1' or high'2')
             if (userPreference[i] === "0" && menuItem.dish_key[i] !== "0") {
-              matched = false;
-              // console.log('matched false: 5' )
+              // matched = false;
+              console.log('matched false: 5' )
             }
 
             // feelingType 0=adventurous, 1=safe

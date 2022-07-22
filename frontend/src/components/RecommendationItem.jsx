@@ -75,7 +75,14 @@ function OrderItem({ recommendation }) {
                         </div>
 
                     ) : ( 
-                        <div> Your review for this dish   {recommendation.review} </div>
+                        <div> Your review for this dish was:
+
+                            <strong>
+                               {recommendation.review === 0 ? " Hated it" : 
+                               recommendation.review === 1 ? " Willing to try again" :  
+                               " Loved it"} 
+                            </strong>
+                               </div>
                     ) }
 
 

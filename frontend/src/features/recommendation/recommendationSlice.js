@@ -89,7 +89,7 @@ export const recommendationSlice = createSlice({
                 console.log(action.payload)
                 if(action.payload === 204) {
                     console.log("CHANGED!!!!!")
-                    state.message = "No food dishes were found with your current selected preferences"
+                    state.message = "No food dishes were found with your current selected preferences, or not enough restaurants within locality. We are working to add more restaurants to the system"
                 } else {
                     state.message = ''
                     state.recommendations.unshift(action.payload)

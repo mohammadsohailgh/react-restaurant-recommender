@@ -33,11 +33,11 @@ function Header() {
                       <Link to='/history'>History</Link>
                     </div>
                   </li>
-                  <li className="nav-item">
+                  {/* <li className="nav-item">
                     <div className="nav-link" >
                       <Link to='/roulette'>Roulette</Link>
                     </div>
-                  </li>
+                  </li> */}
                   <li className="nav-item">
                     <div className="nav-link" >
                       <Link to='/preferences'>Preferences</Link>
