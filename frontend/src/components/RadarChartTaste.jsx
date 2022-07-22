@@ -1,8 +1,6 @@
 import RadarChart from 'react-svg-radar-chart';
 
-
 function TasteRadarChart({ taste_group, data2, size, colour, colour_2 }) {
-
     // react radar chart
     const data = [{
         data: {
