@@ -7,7 +7,7 @@ import History from "./pages/History";
 import Preferences from "./pages/Preferences";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Roulette from "./pages/Roulette";
+// import Roulette from "./pages/Roulette";
 
 function App() {
   return (

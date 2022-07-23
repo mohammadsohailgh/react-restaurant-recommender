@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"; //
+import { useEffect } from "react"; //
 import { useNavigate } from "react-router-dom"; //used to redierct user
 import { useSelector, useDispatch } from "react-redux"; // used to grab user from state to see if theyre logged in
 import RecommendationItem from "../components/RecommendationItem";
@@ -8,19 +8,13 @@ import ToastGetLocation from "../components/ToastGetLocation";
 
 import { getPreference, setFeelingType } from "../features/preference/preferenceSlice";
 import { getRecommendations } from "../features/recommendation/recommendationSlice";
-import { toast } from 'react-toastify'
 
 function Dashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { user, } = useSelector((state) => state.auth); //get the user from state.auth
-  const { recommendations, isError, isSuccess, message } = useSelector((state) => state.recommendations); //get the user from state.auth
-
-  const locationToast = () =>
-    toast.warn("Please enable location for full application features", 
-    {autoClose: false })
-  
+  const { recommendations, isError, message } = useSelector((state) => state.recommendations); //get the user from state.auth
 
   useEffect(() => {
     
@@ -38,9 +32,7 @@ function Dashboard() {
   }, [user, navigate, isError, message, dispatch]);
 
   const recommendationTypeOnChange = (e) => {
-    // setLocalFeelingType(e.target.id)
     console.log('recommendationTypeOnChange hit!', typeof(e.target.id) ) 
-    // if (e.target.id) {
     dispatch(setFeelingType(e.target.id ))
   }
 

@@ -77,7 +77,7 @@ const setRecommendation = asyncHandler(async (req, res) => {
     }
   }
 
-  console.log('lat', lat, ' long: ', long)
+  console.log('lat', lat, ' long: ', long, 'feeling_type:', feelingType, 'user_preference:', userPreference)
 
   // calculate distance between current user location and all restaurants
   const distanceCalculated = Restaurants.map((restaurant) => ({
@@ -88,111 +88,111 @@ const setRecommendation = asyncHandler(async (req, res) => {
   // filter restaurants within 3 mile radius
   const localRestaurants = distanceCalculated.filter(
     restaurant => restaurant.distance <= 15)
-  
+
   console.log('restaurant length within 3 miles ', localRestaurants.length)
 
   // for (var r of localRestaurants) {
   //   console.log(r.restaurant_name, 'menu length:', r.menu.length);
   // }
 
-  // for (var r of localRestaurants) {
-  //   console.log('\n restaurant menu within distance, ', r.restaurant_name, r.menu)
-  // }
+  for (var r of localRestaurants) {
+    console.log('\n restaurant menu within distance, ', r.restaurant_name, r.menu)
+  }
 
   for (const restaurant of localRestaurants) {
     // console.log(restaurant )
     if (restaurant.menu.length > 0) {
-    const filtered = restaurant.menu.filter(
-      function (menuItem) {
-        var matched = true;
-        menuItem.tasteMatchCount = 0;
-        for (var i = 0; i < menuItem.dish_key.length; i++) {
-          
-          // Firstly filtering the correct dish types for time of day:
-          if (i < 2) {
-            // recommend breakfast dishes
-            if (userPreference.slice(0, 2) == "00") {
-              if (
-                menuItem.dish_key.slice(0, 2) != "00" || menuItem.dish_key.slice(0, 2) != "10"
-                // && menuItem.dish_key.slice(0, 2) != "01"
-              ) {
-                console.log("matched=false, food type breakfast");
+      const filtered = restaurant.menu.filter(
+        function (menuItem) {
+          var matched = true;
+          menuItem.tasteMatchCount = 0;
+          for (var i = 0; i < menuItem.dish_key.length; i++) {
+
+            // Firstly filtering the correct dish types for time of day:
+            if (i < 2) {
+              // recommend breakfast dishes
+              if (userPreference.slice(0, 2) == "00") {
+                if (
+                  menuItem.dish_key.slice(0, 2) != "00" && menuItem.dish_key.slice(0, 2) != "10"
+                  // && menuItem.dish_key.slice(0, 2) != "01"
+                ) {
+                  console.log("matched=false, food type breakfast");
+                  matched = false;
+                }
+              }
+              // recommend lunch dishes
+              else if (userPreference.slice(0, 2) == "10") {
+                if (
+                  menuItem.dish_key.slice(0, 2) != "10" &&
+                  menuItem.dish_key.slice(0, 2) != "11"
+                ) {
+                  console.log("matched=false, food type lunch");
+                  matched = false;
+                }
+              }
+              // recommend dinner dishes
+              else if (userPreference.slice(0, 2) == "01") {
+                if (
+                  menuItem.dish_key.slice(0, 2) != "11" &&
+                  menuItem.dish_key.slice(0, 2) != "01"
+                ) {
+                  console.log("matched=false, food type dinner");
+                  matched = false;
+                }
+              }
+              // skip this iteration to seek 3rd char of loop (dish_key)
+              i++;
+            }
+
+            // Secondly filtering dietary preference:
+            else if (i < 6) {
+              if (userPreference[i] === "1" && menuItem.dish_key[i] !== "1") {
                 matched = false;
+                console.log("matched=false, dietary preference");
               }
             }
-            // recommend lunch dishes
-            else if (userPreference.slice(0, 2) == "10") {
-              if (
-                menuItem.dish_key.slice(0, 2) != "10" ||
-                menuItem.dish_key.slice(0, 2) != "11"
-              ) {
-                console.log("matched=false, food type lunch");
-                matched = false;
-              }
-            }
-            // recommend dinner dishes
-            else if (userPreference.slice(0, 2) == "01") {
-              if (
-                menuItem.dish_key.slice(0, 2) != "11" ||
-                menuItem.dish_key.slice(0, 2) != "01"
-              ) {
-                console.log("matched=false, food type dinner");
-                matched = false;
-              }
-            }
-            // skip this iteration to seek 3rd char of loop (dish_key)
-            i++;
-          }
 
-          // Secondly filtering dietary preference:
-          else if (i < 6) {
-            if (userPreference[i] === "1" && menuItem.dish_key[i] !== "1") {
-              matched = false;
-              console.log("matched=false, dietary preference");
-            }
-          }
-
-          // Thirdly filtering allergens preference:
-          else if (i < 10) {
-            if (userPreference[i] === "1" && menuItem.dish_key[i] === "1") {
-              matched = false;
-              console.log('matched false: 4' )
-            }
-          }
-
-          // Fourthly filtering taste group
-          // spice[10] bitter[11], sweet[12], sour[13], salty[14], savoury[15]
-          else if (i <= 15) {
-            // exclude food items if user preference is 0 and food item has some level inside (medium'1' or high'2')
-            if (userPreference[i] === "0" && menuItem.dish_key[i] !== "0") {
-              // matched = false;
-              console.log('matched false: 5' )
-            }
-
-            // feelingType 0=adventurous, 1=safe
-            if (feelingType === "0") {
-              // if user preference loves (2) food taste category and food item has high (2) trace of taste, then increment likliness count of user will like
+            // Thirdly filtering allergens preference:
+            else if (i < 10) {
               if (userPreference[i] === "1" && menuItem.dish_key[i] === "1") {
-                menuItem.tasteMatchCount++;
-                // matched
+                matched = false;
+                console.log('matched false: 4')
               }
-            } else if (feelingType === "1") {
-              // if user preference willing to try (1) food taste category and food item has medium (1) trace of taste, then increment likliness count of user willingness to try
-              if (userPreference[i] === "2" && menuItem.dish_key[i] === "2") {
-                menuItem.tasteMatchCount++;
-                // matched
+            }
+
+            // Fourthly filtering taste group
+            // spice[10] bitter[11], sweet[12], sour[13], salty[14], savoury[15]
+            else if (i <= 15) {
+              // exclude food items if user preference is 0 and food item has some level inside (medium'1' or high'2')
+              if (userPreference[i] === "0" && menuItem.dish_key[i] !== "0") {
+                // matched = false;
+                console.log('matched false: 5')
+              }
+
+              // feelingType 0=adventurous, 1=safe
+              if (feelingType === "0") {
+                // if user preference loves (2) food taste category and food item has high (2) trace of taste, then increment likliness count of user will like
+                if (userPreference[i] === "1" && menuItem.dish_key[i] === "1") {
+                  menuItem.tasteMatchCount++;
+                  // matched
+                }
+              } else if (feelingType === "1") {
+                // if user preference willing to try (1) food taste category and food item has medium (1) trace of taste, then increment likliness count of user willingness to try
+                if (userPreference[i] === "2" && menuItem.dish_key[i] === "2") {
+                  menuItem.tasteMatchCount++;
+                  // matched
+                }
               }
             }
           }
-        }
 
-        if (matched === true) {
-          console.log("matched=true, dish name:", menuItem.dish_name, "tasteMatchCount: ", menuItem.tasteMatchCount);
-          return menuItem;
+          if (matched === true) {
+            console.log("matched=true, dish name:", menuItem.dish_name, "tasteMatchCount: ", menuItem.tasteMatchCount);
+            return menuItem;
+          }
         }
-      }
-    );
-    restaurant.menu = filtered;
+      );
+      restaurant.menu = filtered;
     }
   }
 
@@ -252,7 +252,7 @@ const setRecommendation = asyncHandler(async (req, res) => {
     tasteMatchCount: singleRecommendation.menu.tasteMatchCount,
     userFeelingType: feelingType,
     distance: singleRecommendation.distance
-  }); 
+  });
 
   // FIGURE OUT A WAY TO EXTRACT ONLY ONE MENU ITEM FROM RECOMMENDED RESTAURANT
   console.log("response 200 sent recommendation");

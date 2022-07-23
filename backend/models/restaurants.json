@@ -81,7 +81,7 @@
     "menu": [
       {
         "dish_uid": 5,
-        "dish_key": "0100001010001022",
+        "dish_key": "1000001010001022",
         "dish_name": "The Bristolian",
         "dish_description": "Two free range fried eggs, toast, free range cumberland sausages , baked beans, free range bacon, sesame infused spinach, grilled sunblush tomatoes and crispy fried potatoes."
       }
@@ -152,5 +152,33 @@
         "dish_description": "Quorn and avocado with salad, honey mustard dressing and crispy baco bits."
       }
     ]
+  },
+  {
+    "restaurant_name": "Fresh the Baguette Bar",
+    "price_range": "££",
+    "cuisine": "British - Fast Food - Fried Chicken",
+    "address": "Imperial Gate, Basement Unit at, St Mary St, Cardiff CF10 1FE",
+    "lat": 51.47720167043915,
+    "long":  -3.1772940170490678,
+    "menu": [
+      {
+        "dish_uid": 12,
+        "dish_key": "1100001010111122",
+        "dish_name": "The Dirty Sandwich",
+        "dish_description": "Boneless fried chicken + iceberg + dirty BBQ sauce + cheese + hashbrown + blue cheese sauce + white onion + mayo + pickled celery."
+      }
+    ]
   }
+
+
+
+            
+
+
+
+
+
+
+
+
 ]
