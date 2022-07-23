@@ -1,5 +1,4 @@
 import LargeRecommenderButton from './LargeRecommenderButton'
-import { useState, useEffect } from 'react'
 
 function ChooseRestaurantModal() {
 

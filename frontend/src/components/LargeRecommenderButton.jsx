@@ -45,7 +45,6 @@ function LargeRecommenderButton({ target, title, foodGroup, size, colour }) {
 
   useEffect(() => {
     if (isError) {
-      toast.error(message)
       console.log(message)
     }
 

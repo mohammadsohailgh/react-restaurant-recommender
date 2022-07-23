@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"; //
 import { useNavigate } from "react-router-dom"; //used to redierct user
 import { useSelector, useDispatch } from "react-redux"; // used to grab user from state to see if theyre logged in
 import React from "react";
-import { Link } from "react-router-dom";
+import ModalCustom from "../components/ModalCustom";
 
 import {
   setPreference,
@@ -36,7 +36,7 @@ function Preferences() {
     { name: "Gluten", value: "0", position: 6 },
     { name: "Nuts", value: "0", position: 7 },
 
-    { name: "Spice Tolerance", value: "1", position: 8, description: "" },
+    { name: "Spice Tolerance", value: "1", position: 8, description: "How spicy do you enjoy your food?" },
     {
       name: "Bitter",
       value: "1",
@@ -71,8 +71,14 @@ function Preferences() {
       position: 13,
       description:
         "Meat, eggplant, mushrooms, beans, MSG. savoury uses ingredients whose flavors are commonly described as earthy or meaty. This is the elusive “fifth taste” that registers on a person’s tongue. Technically, it is the detection of glutamates in food. Glutamates are an amino acid, the metabolic product of protein. And, if it hasn’t dawned on you yet, it is the ‘G’ in MSG – Monosodium Glutamate.",
-    },
+    }
   ]);
+
+  const [customModalProperties, setCustomModalProperties] = useState(
+    {
+      title: 'test',
+      text: 'test'
+    })
 
   // const color = d.y >= 70 ? "green" : d.y >= 50 ? "yellow" : "red";
   const spiceColour =
@@ -149,6 +155,8 @@ function Preferences() {
     destructAllPreferences(globalStatePreference);
   }
 
+
+
   return (
     <>
       {isSuccess ? (
@@ -207,18 +215,14 @@ function Preferences() {
                           <React.Fragment key={position}>
                             <div className="row">
                               <div className="col-sm-5 text-center  ">
-                                {name}
+                                {name} 
+                                
+                                {}
+                                &nbsp; 
+                                <div className="badge bg-warning text-wrap" style={{ width: 20 }} data-bs-toggle="modal" data-bs-target="#modalTasteExample" 
+                                onClick={() => setCustomModalProperties({title: name, text: description })}
+                                >?</div>
 
-                                <button
-                                  type="button"
-                                  className="btn btn-link"
-                                  data-bs-toggle="tooltip"
-                                  title={description}
-                                  style={{ fontSize: 13 }}
-                                >
-                                  {" "}
-                                  Click for example{" "}
-                                </button>
                               </div>
                               <div className="col-sm">
                                 <div className="row ">
@@ -254,6 +258,8 @@ function Preferences() {
                       })}
                   </div>
                 </div>
+
+
 
                 <div className="col-sm-5 align-self-start ">
                   <p className="text-muted mb-0 " style={{ fontSize: 13 }}>
@@ -298,8 +304,12 @@ function Preferences() {
               </div>
             </div>
           </footer>
+
+          <ModalCustom title={customModalProperties.title} text={customModalProperties.text}/>
         </>
       ) : null}
+
+
     </>
   );
 }

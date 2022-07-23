@@ -34,15 +34,6 @@ function ToastGetLocation() {
         setLocationEnabled(false) 
       }
 
-      const locationFail = () =>
-        toast.warn("Please enable location for full application features", 
-        {autoClose: false })
-    
-      const locationSuccess = () => {
-        toast.success("Location successfully shared", 
-        {autoClose: false })
-        }
-
       useEffect(() => { 
           if(!locationEnabled) {
              toastId.current = toast.warn("Please enable location for full application features", 
@@ -51,7 +42,7 @@ function ToastGetLocation() {
             toast.dismiss(toastId.current);
             setLocationEnabled(true) 
           }
-      }, [locationEnabled, locationEnabled] )
+      } )
 
     getLocation()
 
