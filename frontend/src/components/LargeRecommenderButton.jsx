@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"; // used to grab user from state to see if theyre logged in
-import { createRecommendation, reset } from "../features/recommendation/recommendationSlice.js";
-import { toast } from 'react-toastify'
+import { createRecommendation } from "../features/recommendation/recommendationSlice.js";
 
 function LargeRecommenderButton({ target, title, foodGroup, size, colour }) {
 
