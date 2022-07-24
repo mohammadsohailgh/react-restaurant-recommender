@@ -45,7 +45,7 @@ function History() {
       <p> Filter</p>
       <div className="btn-group mb-3" role="group" aria-label="Basic radio toggle button group" onChange={changeFilter} >
         <input type="radio" className="btn-check" name="btnradio" id="all" autoComplete="off" defaultChecked />
-        <label className="btn btn-outline-primary" htmlFor="all">All recommendations ({recommendations.length}) </label>
+        <label className="btn btn-outline-primary" htmlFor="all">All history ({recommendations.length}) </label>
 
         <input type="radio" className="btn-check" name="btnradio" id="reviewed" autoComplete="off" />
         <label className="btn btn-outline-primary" htmlFor="reviewed">Reviewed ({recommendations.filter(e => e.hasOwnProperty('review')).length}) </label>
@@ -53,6 +53,7 @@ function History() {
         <input type="radio" className="btn-check" name="btnradio" id="unreviewed" autoComplete="off" />
         <label className="btn btn-outline-primary" htmlFor="unreviewed">Unreviewed ({recommendations.filter(e => !e.hasOwnProperty('review')).length}) </label>
       </div>
+
 
 
       {recommendations.length > 0 ? (
