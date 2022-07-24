@@ -42,7 +42,7 @@ function ToastGetLocation() {
             toast.dismiss(toastId.current);
             setLocationEnabled(true) 
           }
-      } )
+      }, [locationEnabled] )
 
     getLocation()
 
