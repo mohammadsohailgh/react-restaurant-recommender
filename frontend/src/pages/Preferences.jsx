@@ -134,7 +134,6 @@ function Preferences() {
   useEffect(() => {
     // const preamble = dietaryPreference.map(i => i === true ? 1 : 0)
     if (isError) {
-      toast.error(message);
       console.log(message);
     }
 
